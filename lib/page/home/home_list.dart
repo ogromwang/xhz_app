@@ -1,5 +1,5 @@
 import 'dart:ui';
-import 'package:demo_app/page/home/model/hotel_list_data.dart';
+import 'package:demo_app/page/home/model/list_data.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -103,10 +103,11 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
                                 print("当前index $index, 当前高度：height $height");
                                 return Card(
                                   // Give each item a random background color
-                                  color: Color.fromARGB(Random().nextInt(256), Random().nextInt(256), Random().nextInt(256), Random().nextInt(256)),
+                                  color: Color.fromARGB(
+                                      Random().nextInt(256), Random().nextInt(256), Random().nextInt(256), Random().nextInt(256)),
                                   child: SizedBox(
                                     height: height,
-                                    child: Center(
+                                    child: const Center(
                                       child: Text("title"),
                                     ),
                                   ),
@@ -124,7 +125,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
       ),
     );
   }
-
 
   Widget getSearchBarUI() {
     return Padding(
@@ -147,9 +147,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
                 child: Padding(
                   padding: const EdgeInsets.only(left: 16, right: 16, top: 4, bottom: 4),
                   child: TextField(
-                    onChanged: (String txt) {
-
-                    },
+                    onChanged: (String txt) {},
                     style: const TextStyle(
                       fontSize: 16,
                     ),
@@ -300,10 +298,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
               alignment: Alignment.centerLeft,
               width: AppBar().preferredSize.height + 40,
               height: AppBar().preferredSize.height,
-              child: const Material(
-                color: Colors.transparent,
-                child: Text("")
-              ),
+              child: const Material(color: Colors.transparent, child: Text("")),
             ),
 
             // 中间文字

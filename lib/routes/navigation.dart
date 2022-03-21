@@ -51,7 +51,9 @@ class FloatingButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
-      onPressed: () {},
+      onPressed: () {
+        Navigator.pushNamed(context, '/add');
+      },
       child: const Icon(Icons.add),
     );
   }
