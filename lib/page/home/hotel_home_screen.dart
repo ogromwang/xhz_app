@@ -79,7 +79,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
                                 return Column(
                                   children: <Widget>[
                                     getSearchBarUI(),
-                                    getTimeDateUI(),
+                                    // getTimeDateUI(),
                                   ],
                                 );
                               }, childCount: 1),
@@ -495,30 +495,23 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
         padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top, left: 8, right: 8),
         child: Row(
           children: <Widget>[
+            // 左箭头
             Container(
               alignment: Alignment.centerLeft,
               width: AppBar().preferredSize.height + 40,
               height: AppBar().preferredSize.height,
-              child: Material(
+              child: const Material(
                 color: Colors.transparent,
-                child: InkWell(
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(32.0),
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Icon(Icons.arrow_back),
-                  ),
-                ),
+                child: Text("")
               ),
             ),
-            Expanded(
+
+            // 中间文字
+            const Expanded(
+              flex: 2,
               child: Center(
                 child: Text(
-                  'Explore',
+                  '首页',
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 22,
@@ -526,6 +519,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
                 ),
               ),
             ),
+
+            // 右边 icon，暂时不需要
             Container(
               width: AppBar().preferredSize.height + 40,
               height: AppBar().preferredSize.height,
@@ -542,7 +537,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
                       onTap: () {},
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Icon(Icons.favorite_border),
+                        // child: Icon(Icons.favorite_border),
                       ),
                     ),
                   ),
@@ -555,7 +550,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
                       onTap: () {},
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Icon(FontAwesomeIcons.mapMarkerAlt),
+                        // child: Icon(FontAwesomeIcons.mapMarkerAlt),
                       ),
                     ),
                   ),
