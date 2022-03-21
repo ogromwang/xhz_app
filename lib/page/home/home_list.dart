@@ -1,13 +1,10 @@
 import 'dart:ui';
-import 'package:demo_app/page/home/calendar_popup_view.dart';
-import 'package:demo_app/page/home/hotel_list_view.dart';
 import 'package:demo_app/page/home/model/hotel_list_data.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:intl/intl.dart';
 import 'filters_screen.dart';
-import 'hotel_app_theme.dart';
+import 'app_theme.dart';
 import 'dart:math';
 
 class HotelHomeScreen extends StatefulWidget {
@@ -79,7 +76,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
                                 return Column(
                                   children: <Widget>[
                                     getSearchBarUI(),
-                                    // getTimeDateUI(),
                                   ],
                                 );
                               }, childCount: 1),
@@ -129,184 +125,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
     );
   }
 
-  Widget getListUI() {
-    return Container(
-      decoration: BoxDecoration(
-        color: HotelAppTheme.buildLightTheme().backgroundColor,
-        boxShadow: <BoxShadow>[
-          BoxShadow(color: Colors.grey.withOpacity(0.2), offset: const Offset(0, -2), blurRadius: 8.0),
-        ],
-      ),
-      child: Column(
-        children: <Widget>[
-          Container(
-            height: MediaQuery.of(context).size.height - 156 - 50,
-            child: FutureBuilder<bool>(
-              future: getData(),
-              builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-                if (!snapshot.hasData) {
-                  return const SizedBox();
-                } else {
-                  return ListView.builder(
-                    itemCount: hotelList.length,
-                    scrollDirection: Axis.vertical,
-                    itemBuilder: (BuildContext context, int index) {
-                      final int count = hotelList.length > 10 ? 10 : hotelList.length;
-                      final Animation<double> animation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-                          parent: animationController!, curve: Interval((1 / count) * index, 1.0, curve: Curves.fastOutSlowIn)));
-                      animationController?.forward();
-
-                      return HotelListView(
-                        callback: () {},
-                        hotelData: hotelList[index],
-                        animation: animation,
-                        animationController: animationController!,
-                      );
-                    },
-                  );
-                }
-              },
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget getHotelViewList() {
-    final List<Widget> hotelListViews = <Widget>[];
-    for (int i = 0; i < hotelList.length; i++) {
-      final int count = hotelList.length;
-      final Animation<double> animation = Tween<double>(begin: 0.0, end: 1.0).animate(
-        CurvedAnimation(
-          parent: animationController!,
-          curve: Interval((1 / count) * i, 1.0, curve: Curves.fastOutSlowIn),
-        ),
-      );
-      hotelListViews.add(
-        HotelListView(
-          callback: () {},
-          hotelData: hotelList[i],
-          animation: animation,
-          animationController: animationController!,
-        ),
-      );
-    }
-    animationController?.forward();
-    return Column(
-      children: hotelListViews,
-    );
-  }
-
-  Widget getTimeDateUI() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 18, bottom: 16),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: Row(
-              children: <Widget>[
-                Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    focusColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    hoverColor: Colors.transparent,
-                    splashColor: Colors.grey.withOpacity(0.2),
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(4.0),
-                    ),
-                    onTap: () {
-                      FocusScope.of(context).requestFocus(FocusNode());
-                      // setState(() {
-                      //   isDatePopupOpen = true;
-                      // });
-                      showDemoDialog(context: context);
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8, right: 8, top: 4, bottom: 4),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            'Choose date',
-                            style: TextStyle(fontWeight: FontWeight.w100, fontSize: 16, color: Colors.grey.withOpacity(0.8)),
-                          ),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          Text(
-                            '${DateFormat("dd, MMM").format(startDate)} - ${DateFormat("dd, MMM").format(endDate)}',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w100,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(right: 8),
-            child: Container(
-              width: 1,
-              height: 42,
-              color: Colors.grey.withOpacity(0.8),
-            ),
-          ),
-          Expanded(
-            child: Row(
-              children: <Widget>[
-                Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    focusColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    hoverColor: Colors.transparent,
-                    splashColor: Colors.grey.withOpacity(0.2),
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(4.0),
-                    ),
-                    onTap: () {
-                      FocusScope.of(context).requestFocus(FocusNode());
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8, right: 8, top: 4, bottom: 4),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            'Number of Rooms',
-                            style: TextStyle(fontWeight: FontWeight.w100, fontSize: 16, color: Colors.grey.withOpacity(0.8)),
-                          ),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          Text(
-                            '1 Room - 2 Adults',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w100,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
   Widget getSearchBarUI() {
     return Padding(
@@ -329,14 +147,16 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
                 child: Padding(
                   padding: const EdgeInsets.only(left: 16, right: 16, top: 4, bottom: 4),
                   child: TextField(
-                    onChanged: (String txt) {},
+                    onChanged: (String txt) {
+
+                    },
                     style: const TextStyle(
-                      fontSize: 18,
+                      fontSize: 16,
                     ),
                     cursorColor: HotelAppTheme.buildLightTheme().primaryColor,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: InputBorder.none,
-                      hintText: 'London...',
+                      hintText: '',
                     ),
                   ),
                 ),
@@ -397,9 +217,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
             padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 4),
             child: Row(
               children: <Widget>[
-                Expanded(
+                const Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(8.0),
                     child: Text(
                       '530 hotels found',
                       style: TextStyle(
@@ -430,7 +250,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
                       padding: const EdgeInsets.only(left: 8),
                       child: Row(
                         children: <Widget>[
-                          Text(
+                          const Text(
                             'Filter',
                             style: TextStyle(
                               fontWeight: FontWeight.w100,
@@ -459,26 +279,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
           ),
         )
       ],
-    );
-  }
-
-  void showDemoDialog({BuildContext? context}) {
-    showDialog<dynamic>(
-      context: context!,
-      builder: (BuildContext context) => CalendarPopupView(
-        barrierDismissible: true,
-        minimumDate: DateTime.now(),
-        //  maximumDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 10),
-        initialEndDate: endDate,
-        initialStartDate: startDate,
-        onApplyClick: (DateTime startData, DateTime endData) {
-          setState(() {
-            startDate = startData;
-            endDate = endData;
-          });
-        },
-        onCancelClick: () {},
-      ),
     );
   }
 
@@ -535,8 +335,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
                         Radius.circular(32.0),
                       ),
                       onTap: () {},
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
                         // child: Icon(Icons.favorite_border),
                       ),
                     ),
@@ -548,8 +348,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
                         Radius.circular(32.0),
                       ),
                       onTap: () {},
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
                         // child: Icon(FontAwesomeIcons.mapMarkerAlt),
                       ),
                     ),

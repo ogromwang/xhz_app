@@ -1,4 +1,4 @@
-import 'package:demo_app/page/home/hotel_app_theme.dart';
+import 'package:demo_app/page/home/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class RangeSliderView extends StatefulWidget {
