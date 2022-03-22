@@ -5,7 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'filters_screen.dart';
 import 'app_theme.dart';
-import 'dart:math';
+import 'dart:math' as math;
 
 class HotelHomeScreen extends StatefulWidget {
   @override
@@ -15,6 +15,9 @@ class HotelHomeScreen extends StatefulWidget {
 class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderStateMixin {
   // 动画
   AnimationController? animationController;
+
+  double pageOffset = 0;
+  late PageController pageController;
 
   // 数据list
   List<HotelListData> hotelList = HotelListData.hotelList;
@@ -26,6 +29,12 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
   @override
   void initState() {
     animationController = AnimationController(duration: const Duration(milliseconds: 1000), vsync: this);
+
+    pageController = PageController(viewportFraction: 0.84);
+    pageController.addListener(() {
+      setState(() => pageOffset = pageController.page!);
+    });
+
     super.initState();
   }
 
@@ -37,6 +46,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
   @override
   void dispose() {
     animationController?.dispose();
+    pageController.dispose();
     super.dispose();
   }
 
@@ -92,28 +102,28 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
 
                         // 这里是在渲染数据了
                         body: Container(
-                            color: HotelAppTheme.buildLightTheme().backgroundColor,
-                            child: MasonryGridView.count(
-                              padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 2),
-                              crossAxisCount: 2,
-                              mainAxisSpacing: 2,
-                              crossAxisSpacing: 2,
-                              itemBuilder: (context, index) {
-                                double height = HotelListData.heightRandom[index % 7];
-                                print("当前index $index, 当前高度：height $height");
-                                return Card(
-                                  // Give each item a random background color
-                                  color: Color.fromARGB(
-                                      Random().nextInt(256), Random().nextInt(256), Random().nextInt(256), Random().nextInt(256)),
-                                  child: SizedBox(
-                                    height: height,
-                                    child: const Center(
-                                      child: Text("title"),
-                                    ),
+                          color: HotelAppTheme.buildLightTheme().backgroundColor,
+                          child: MasonryGridView.count(
+                            padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 2),
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 2,
+                            crossAxisSpacing: 2,
+                            itemBuilder: (context, index) {
+                              double height = HotelListData.heightRandom[index % 7];
+                              print("当前index $index, 当前高度：height $height");
+                              return Card(
+                                // Give each item a random background color
+                                color: Color.fromARGB(
+                                    math.Random().nextInt(256), math.Random().nextInt(256), math.Random().nextInt(256), math.Random().nextInt(256)),
+                                child: SizedBox(
+                                  height: height,
+                                  child: const Center(
+                                    child: Text("title"),
                                   ),
-                                );
-                              },
-                            )),
+                                ),
+                              );
+                            },
+                          )),
                       ),
                     )
                   ],
@@ -315,43 +325,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
               ),
             ),
 
-            // 右边 icon，暂时不需要
-            Container(
-              width: AppBar().preferredSize.height + 40,
-              height: AppBar().preferredSize.height,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(32.0),
-                      ),
-                      onTap: () {},
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        // child: Icon(Icons.favorite_border),
-                      ),
-                    ),
-                  ),
-                  Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(32.0),
-                      ),
-                      onTap: () {},
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        // child: Icon(FontAwesomeIcons.mapMarkerAlt),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            )
+            // 站位的作用
+            const Spacer()
+
           ],
         ),
       ),

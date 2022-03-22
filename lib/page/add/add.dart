@@ -12,6 +12,8 @@ class AddWidget extends StatefulWidget {
 class _AddWidgetState extends State<AddWidget> {
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+
     return Scaffold(
         appBar: AppBar(
           title: const Text(
@@ -49,22 +51,21 @@ class _AddWidgetState extends State<AddWidget> {
                   ),
                 ),
 
-                Expanded(
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(Color(0xFF48CBB5)),
-                              foregroundColor: MaterialStateProperty.all(Colors.white),
-                            ),
+                SizedBox(height: 40),
+                ElevatedButton(
+                  style: ButtonStyle(
+                      fixedSize: MaterialStateProperty.all(Size.fromWidth(size.width*0.6)),
+                      backgroundColor: MaterialStateProperty.all(const Color(0xFF162A49)),
+                      textStyle: MaterialStateProperty.all(const TextStyle(
+                        color: Colors.white,
+                      )),
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(32),
+                      ))
 
-                            child: Text("确定"),
-                            onPressed: () {}
-                          )
-                        )
-                      ],
-                    )
+                  ),
+                  child: Text('确定'),
+                  onPressed: () {},
                 ),
               ],
             ),
