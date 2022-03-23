@@ -3,24 +3,22 @@ import 'package:demo_app/page/home/model/list_data.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'filters_screen.dart';
 import 'package:demo_app/common/app_theme.dart';
 import 'dart:math' as math;
 
-class HotelHomeScreen extends StatefulWidget {
+class FriendsScreen extends StatefulWidget {
   @override
-  _HotelHomeScreenState createState() => _HotelHomeScreenState();
+  _FriendsScreenState createState() => _FriendsScreenState();
 }
 
-class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderStateMixin {
+class _FriendsScreenState extends State<FriendsScreen> with TickerProviderStateMixin {
   // 动画
   AnimationController? animationController;
 
   double pageOffset = 0;
   late PageController pageController;
 
-  // 数据list
-  List<HotelListData> hotelList = HotelListData.hotelList;
+
   final ScrollController _scrollController = ScrollController();
 
   DateTime startDate = DateTime.now();
@@ -90,43 +88,18 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
                                 );
                               }, childCount: 1),
                             ),
-                            SliverPersistentHeader(
-                              pinned: true,
-                              floating: true,
-                              delegate: ContestTabHeader(
-                                getFilterBarUI(),
-                              ),
-                            ),
+
                           ];
                         },
 
                         // 这里是在渲染数据了
                         body: Container(
                           color: HomeAppTheme.buildLightTheme().backgroundColor,
-                          child: MasonryGridView.count(
-                            padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 2),
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 2,
-                            crossAxisSpacing: 2,
-                            itemBuilder: (context, index) {
-                              double height = HotelListData.heightRandom[index % 7];
-                              print("当前index $index, 当前高度：height $height");
-                              return Card(
-                                // Give each item a random background color
-                                color: Color.fromARGB(
-                                    math.Random().nextInt(256), math.Random().nextInt(256), math.Random().nextInt(256), math.Random().nextInt(256)),
-                                child: SizedBox(
-                                  height: height,
-                                  child: const Center(
-                                    child: Text("title"),
-                                  ),
-                                ),
-                              );
-                            },
-                          )),
+                          child: Text("text")
+                        )
                       ),
                     )
-                  ],
+                  ]
                 ),
               ),
             ],
@@ -199,94 +172,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
           ),
         ],
       ),
-    );
-  }
-
-  Widget getFilterBarUI() {
-    return Stack(
-      children: <Widget>[
-        Positioned(
-          top: 0,
-          left: 0,
-          right: 0,
-          child: Container(
-            height: 24,
-            decoration: BoxDecoration(
-              color: HomeAppTheme.buildLightTheme().backgroundColor,
-              boxShadow: <BoxShadow>[
-                BoxShadow(color: Colors.grey.withOpacity(0.2), offset: const Offset(0, -2), blurRadius: 8.0),
-              ],
-            ),
-          ),
-        ),
-        Container(
-          color: HomeAppTheme.buildLightTheme().backgroundColor,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 4),
-            child: Row(
-              children: <Widget>[
-                const Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      '530 hotels found',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w100,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                ),
-                Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    focusColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    hoverColor: Colors.transparent,
-                    splashColor: Colors.grey.withOpacity(0.2),
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(4.0),
-                    ),
-                    onTap: () {
-                      FocusScope.of(context).requestFocus(FocusNode());
-                      Navigator.push<dynamic>(
-                        context,
-                        MaterialPageRoute<dynamic>(builder: (BuildContext context) => FiltersScreen(), fullscreenDialog: true),
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: Row(
-                        children: <Widget>[
-                          const Text(
-                            'Filter',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w100,
-                              fontSize: 16,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Icon(Icons.sort, color: HomeAppTheme.buildLightTheme().primaryColor),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        const Positioned(
-          top: 0,
-          left: 0,
-          right: 0,
-          child: Divider(
-            height: 1,
-          ),
-        )
-      ],
     );
   }
 

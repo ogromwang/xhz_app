@@ -24,12 +24,17 @@ class _HomeDrawerState extends State<HomeDrawer> {
     drawerList = <DrawerList>[
       DrawerList(
         index: DrawerIndex.HOME,
-        labelName: 'Home',
+        labelName: '首页',
         icon: Icon(Icons.home),
       ),
       DrawerList(
+        index: DrawerIndex.Friends,
+        labelName: '好友',
+        icon: Icon(Icons.people_sharp),
+      ),
+      DrawerList(
         index: DrawerIndex.About,
-        labelName: 'About Us',
+        labelName: '关于',
         icon: Icon(Icons.info),
       ),
     ];
@@ -143,6 +148,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
     print('Doing Something...'); // Print to console.
   }
 
+  // 侧边栏单个
   Widget inkwell(DrawerList listData) {
     return Material(
       color: Colors.transparent,
@@ -241,6 +247,7 @@ enum DrawerIndex {
   FeedBack,
   Help,
   Share,
+  Friends,
   About,
   Invite,
   Testing,

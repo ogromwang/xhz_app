@@ -49,19 +49,17 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
       drawerIndex = drawerIndexData;
       switch (drawerIndex) {
         case DrawerIndex.HOME:
-          // setState(() {
-          //   screenView = HotelHomeScreen();
-          // });
+          setState(() {
+            screenView = HotelHomeScreen();
+          });
           break;
-        case DrawerIndex.Help:
+        case DrawerIndex.Friends:
 
           break;
-        case DrawerIndex.FeedBack:
+        case DrawerIndex.About:
 
           break;
-        case DrawerIndex.Invite:
 
-          break;
         default:
           break;
       }

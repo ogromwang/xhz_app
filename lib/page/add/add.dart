@@ -1,5 +1,5 @@
 import 'package:demo_app/common/app_theme.dart';
-import 'package:demo_app/page/home/app_theme.dart';
+import 'package:demo_app/common/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class AddWidget extends StatefulWidget {
@@ -23,48 +23,44 @@ class _AddWidgetState extends State<AddWidget> {
               fontSize: 22,
             ),
           ),
-          backgroundColor: Color(0xFF48CBB5),
+          backgroundColor: Color(0xFF162A49),
           foregroundColor: Colors.white,
         ),
         body: Container(
           child: Center(
             child: Column(
               children: [
-                Padding(
+                const Padding(
                     padding: EdgeInsets.fromLTRB(20, 50, 20, 0),
                     child: TextField(
                         decoration: InputDecoration(
                             hintText: "请输入花销",
                             icon: Icon(Icons.attach_money_outlined),
                             alignLabelWithHint: true,
-                            floatingLabelAlignment: FloatingLabelAlignment.center)
-                    )
-                ),
+                            floatingLabelAlignment: FloatingLabelAlignment.center))),
 
                 // 横线
-                Divider(),
+                const Divider(),
 
-                Padding(
+                const Padding(
                   padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
                   child: TextField(
                     decoration: InputDecoration(hintText: "请输入描述", icon: Icon(Icons.message_rounded)),
                   ),
                 ),
 
-                SizedBox(height: 40),
+                const SizedBox(height: 40),
                 ElevatedButton(
                   style: ButtonStyle(
-                      fixedSize: MaterialStateProperty.all(Size.fromWidth(size.width*0.6)),
+                      fixedSize: MaterialStateProperty.all(Size.fromWidth(size.width * 0.6)),
                       backgroundColor: MaterialStateProperty.all(const Color(0xFF162A49)),
                       textStyle: MaterialStateProperty.all(const TextStyle(
                         color: Colors.white,
                       )),
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(32),
-                      ))
-
-                  ),
-                  child: Text('确定'),
+                      ))),
+                  child: const Text('确定'),
                   onPressed: () {},
                 ),
               ],
