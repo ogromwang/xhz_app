@@ -1,10 +1,8 @@
 import 'dart:ui';
-import 'package:demo_app/page/home/model/list_data.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:demo_app/common/app_theme.dart';
-import 'dart:math' as math;
+import 'package:demo_app/routes/navigation.dart';
 
 class FriendsScreen extends StatefulWidget {
   @override
@@ -17,7 +15,6 @@ class _FriendsScreenState extends State<FriendsScreen> with TickerProviderStateM
 
   double pageOffset = 0;
   late PageController pageController;
-
 
   final ScrollController _scrollController = ScrollController();
 
@@ -54,6 +51,7 @@ class _FriendsScreenState extends State<FriendsScreen> with TickerProviderStateM
       data: HomeAppTheme.buildLightTheme(),
       child: Container(
         child: Scaffold(
+          floatingActionButton: FloatingAddFriendButton(),
           // stack 堆叠
           body: Stack(
             children: <Widget>[
@@ -67,14 +65,13 @@ class _FriendsScreenState extends State<FriendsScreen> with TickerProviderStateM
                   FocusScope.of(context).requestFocus(FocusNode());
                 },
                 // 列
-                child: Column(
-                  children: <Widget>[
-                    getAppBarUI(),
-                    // Flexible组件可以使Row、Column、Flex等子组件在主轴方向有填充可用空间的能力，但是不强制子组件填充可用空间。
-                    // Expanded组件可以使Row、Column、Flex等子组件在其主轴方向上展开并填充可用空间，是强制子组件填充可用空间。
-                    Expanded(
-                      // 可嵌套的滚动
-                      child: NestedScrollView(
+                child: Column(children: <Widget>[
+                  getAppBarUI(),
+                  // Flexible组件可以使Row、Column、Flex等子组件在主轴方向有填充可用空间的能力，但是不强制子组件填充可用空间。
+                  // Expanded组件可以使Row、Column、Flex等子组件在其主轴方向上展开并填充可用空间，是强制子组件填充可用空间。
+                  Expanded(
+                    // 可嵌套的滚动
+                    child: NestedScrollView(
                         controller: _scrollController,
                         // 滑动可以隐藏
                         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -82,25 +79,18 @@ class _FriendsScreenState extends State<FriendsScreen> with TickerProviderStateM
                             SliverList(
                               delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
                                 return Column(
-                                  children: <Widget>[
-                                    getSearchBarUI(),
-                                  ],
+                                  children: []
                                 );
                               }, childCount: 1),
                             ),
-
                           ];
                         },
 
                         // 这里是在渲染数据了
-                        body: Container(
-                          color: HomeAppTheme.buildLightTheme().backgroundColor,
-                          child: Text("text")
-                        )
-                      ),
-                    )
-                  ]
-                ),
+                        body: friendsWidget()
+                    ),
+                  )
+                ]),
               ),
             ],
           ),
@@ -109,10 +99,10 @@ class _FriendsScreenState extends State<FriendsScreen> with TickerProviderStateM
     );
   }
 
-  Widget getSearchBarUI() {
+  Widget friendsWidget() {
     return Padding(
       padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
-      child: Row(
+      child: Column(
         children: <Widget>[
           Expanded(
             child: Padding(
@@ -127,49 +117,11 @@ class _FriendsScreenState extends State<FriendsScreen> with TickerProviderStateM
                     BoxShadow(color: Colors.grey.withOpacity(0.2), offset: const Offset(0, 2), blurRadius: 8.0),
                   ],
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 16, right: 16, top: 4, bottom: 4),
-                  child: TextField(
-                    onChanged: (String txt) {},
-                    style: const TextStyle(
-                      fontSize: 16,
-                    ),
-                    cursorColor: HomeAppTheme.buildLightTheme().primaryColor,
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      hintText: '',
-                    ),
-                  ),
-                ),
+                child: const SizedBox()
               ),
             ),
-          ),
-          Container(
-            decoration: BoxDecoration(
-              color: HomeAppTheme.buildLightTheme().primaryColor,
-              borderRadius: const BorderRadius.all(
-                Radius.circular(38.0),
-              ),
-              boxShadow: <BoxShadow>[
-                BoxShadow(color: Colors.grey.withOpacity(0.4), offset: const Offset(0, 2), blurRadius: 8.0),
-              ],
-            ),
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(32.0),
-                ),
-                onTap: () {
-                  FocusScope.of(context).requestFocus(FocusNode());
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Icon(FontAwesomeIcons.search, size: 20, color: HomeAppTheme.buildLightTheme().backgroundColor),
-                ),
-              ),
-            ),
-          ),
+          )
+
         ],
       ),
     );
@@ -201,7 +153,7 @@ class _FriendsScreenState extends State<FriendsScreen> with TickerProviderStateM
               flex: 2,
               child: Center(
                 child: Text(
-                  '首页',
+                  '好友',
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 22,
@@ -210,9 +162,7 @@ class _FriendsScreenState extends State<FriendsScreen> with TickerProviderStateM
               ),
             ),
 
-            // 站位的作用
-            const Spacer()
-
+            Spacer()
           ],
         ),
       ),

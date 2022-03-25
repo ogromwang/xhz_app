@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'filters_screen.dart';
 import 'package:demo_app/common/app_theme.dart';
+import 'package:demo_app/routes/navigation.dart';
 import 'dart:math' as math;
 
 class HotelHomeScreen extends StatefulWidget {
@@ -56,6 +57,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
       data: HomeAppTheme.buildLightTheme(),
       child: Container(
         child: Scaffold(
+          floatingActionButton: const FloatingAddButton(),
           // stack 堆叠
           body: Stack(
             children: <Widget>[

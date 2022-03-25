@@ -1,7 +1,7 @@
 import 'package:demo_app/routes/navigation_home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:demo_app/routes/routes.dart';
-import 'package:demo_app/routes/navigation.dart';
+
 
 void main() {
   runApp(BootApplication());
@@ -28,7 +28,7 @@ class _HomeWidgetState extends State<HomeWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: NavigationHomeScreen(),
-      floatingActionButton: const FloatingButton(),
+      // floatingActionButton: const FloatingButton(),
       // bottomNavigationBar: const NavigationButton()
     );
   }

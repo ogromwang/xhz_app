@@ -45,8 +45,8 @@ class _NavigationBarState extends State<NavigationButton> {
 }
 
 // FloatingButton 浮动添加按钮
-class FloatingButton extends StatelessWidget {
-  const FloatingButton({Key? key}) : super(key: key);
+class FloatingAddButton extends StatelessWidget {
+  const FloatingAddButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -54,8 +54,22 @@ class FloatingButton extends StatelessWidget {
       onPressed: () {
         Navigator.pushNamed(context, '/add');
       },
-      child: const Icon(Icons.add),
+      child: const Icon(Icons.add, color: Colors.white,),
     );
   }
 }
 
+// FloatingButton 浮动添加按钮
+class FloatingAddFriendButton extends StatelessWidget {
+  const FloatingAddFriendButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () {
+        Navigator.pushNamed(context, '/search');
+      },
+      child: const Icon(Icons.search, color: Colors.white,),
+    );
+  }
+}
