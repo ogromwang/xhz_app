@@ -1,6 +1,9 @@
+import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'dart:ui';
+import 'package:demo_app/model/result/account.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:demo_app/common/app_theme.dart';
 import 'package:demo_app/routes/navigation.dart';
 
@@ -21,6 +24,29 @@ class _FriendsScreenState extends State<FriendsScreen> with TickerProviderStateM
   DateTime startDate = DateTime.now();
   DateTime endDate = DateTime.now().add(const Duration(days: 5));
 
+  AccountFriendResultData data = AccountFriendResultData([], 0);
+
+  int page = 1;
+  int pageSize = 30;
+
+  var mock = """{
+    "code": 200,
+    "data": [{
+        "id": 5,
+        "username": "haohao",
+        "password": "",
+        "profile_picture": "172.16.68.10:9000/image/picture_f71c9e35-083c-4f71-931b-c1db98d99910.jpg",
+        "createAt": "2022-03-28T16:23:13.912566Z"
+    },{
+        "id": 6,
+        "username": "jiangjiang",
+        "password": "",
+        "profile_picture": "172.16.68.10:9000/image/picture_f71c9e35-083c-4f71-931b-c1db98d99910.jpg",
+        "createAt": "2022-03-28T16:23:13.912566Z"
+    }],
+    "error": ""
+}""";
+
   @override
   void initState() {
     animationController = AnimationController(duration: const Duration(milliseconds: 1000), vsync: this);
@@ -30,7 +56,46 @@ class _FriendsScreenState extends State<FriendsScreen> with TickerProviderStateM
       setState(() => pageOffset = pageController.page!);
     });
 
+    requestData();
+
     super.initState();
+  }
+
+  Iterable<void> requestData() sync* {
+    BaseOptions options = BaseOptions();
+    ///请求header的配置
+    options.headers["X-TOKEN"] = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6NiwiVXNlcm5hbWUiOiJqaWFuZ2ppYW5nIiwiSWNvbiI6ImltYWdlL3Rlc3QxLmpwZyIsImV4cCI6MTY0OTE0MjI1OCwiaXNzIjoiamlhbmdqaWFuZyJ9.Hf8HDHlU2mDBy8uaIzZCjHCShMSpcvRepnxaRT_PDNo';
+    options.contentType="application/json";
+    options.method="GET";
+    options.connectTimeout=30000;
+    ///创建 dio
+    Dio dio = Dio(options);
+
+    ///请求地址 获取用户列表
+    String url = "http://172.16.68.10/v1/account/friends?page=$page&pageSize=$pageSize";
+
+    ///发起get请求
+    dio.request(url).then((value) {
+      // 请求成功
+      if (value.statusCode == 200) {
+        var result = AccountFriendResult.fromJson(value.data);
+        if (result.code == 200) {
+          if (result.data != null) {
+            data.list.addAll(result.data.list);
+            data.total = result.data.total;
+            page++;
+          }
+        } else {
+          // 提示错误
+        }
+      } else {
+
+      }
+
+    }).onError((error, stackTrace) {
+      print(error);
+    });
+
   }
 
   Future<bool> getData() async {
@@ -78,17 +143,14 @@ class _FriendsScreenState extends State<FriendsScreen> with TickerProviderStateM
                           return <Widget>[
                             SliverList(
                               delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
-                                return Column(
-                                  children: []
-                                );
+                                return Column(children: []);
                               }, childCount: 1),
                             ),
                           ];
                         },
 
                         // 这里是在渲染数据了
-                        body: friendsWidget()
-                    ),
+                        body: friendsWidget(context)),
                   )
                 ]),
               ),
@@ -99,30 +161,77 @@ class _FriendsScreenState extends State<FriendsScreen> with TickerProviderStateM
     );
   }
 
-  Widget friendsWidget() {
+  Widget friendsWidget(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+      padding: const EdgeInsets.only(left: 6, right: 6, top: 6),
       child: Column(
         children: <Widget>[
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.only(right: 16, top: 8, bottom: 8),
+              padding: const EdgeInsets.only(top: 2),
               child: Container(
-                decoration: BoxDecoration(
-                  color: HomeAppTheme.buildLightTheme().backgroundColor,
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(38.0),
-                  ),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(color: Colors.grey.withOpacity(0.2), offset: const Offset(0, 2), blurRadius: 8.0),
+                child: CustomScrollView(
+                  slivers: <Widget>[
+                    //下拉刷新组件
+                    CupertinoSliverRefreshControl(
+                      //下拉刷新回调
+                      onRefresh: () async {
+                        print("下拉刷新");
+                        //模拟网络请求
+                        await Future.delayed(Duration(milliseconds: 1000));
+                        //结束刷新
+                        return Future.value(true);
+                      },
+                    ),
+                    //列表
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate((content, index)  {
+                        print("当前index: $index");
+                        return _getItem(context, index);
+                      }, childCount: 100),
+                    )
                   ],
                 ),
-                child: const SizedBox()
-              ),
-            ),
+              )),
           )
-
         ],
+      ),
+    );
+  }
+
+  Widget _getItem(BuildContext context, int index) {
+    int num = data.list.length;
+    if (index > num -1) {
+      // 分页重新加载数据，追加数据
+      requestData();
+    }
+    var item = data.list[index];
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 10),
+                child: SizedBox(
+                  height: 60,
+                  width: 60,
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(40.0)),
+                    child: Image.network('http://${item.profilePicture}', fit: BoxFit.cover),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width - 100,
+                child: Text(item.username, overflow: TextOverflow.ellipsis),
+              ),
+            ],
+          ),
+          Divider()
+        ]
       ),
     );
   }
