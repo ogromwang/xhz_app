@@ -1,9 +1,11 @@
 import 'package:demo_app/routes/navigation_home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:demo_app/routes/routes.dart';
+import 'package:demo_app/request/dio.dart';
 
 
 void main() {
+  HttpUtils.init(baseUrl: "172.16.68.10");
   runApp(BootApplication());
 }
 

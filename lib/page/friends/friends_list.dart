@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:demo_app/common/app_theme.dart';
 import 'package:demo_app/routes/navigation.dart';
+import 'package:demo_app/request/dio.dart';
 
 class FriendsScreen extends StatefulWidget {
   @override
