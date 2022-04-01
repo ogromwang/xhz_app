@@ -189,6 +189,10 @@ class Http {
       headers = {
         'X-TOKEN': accessToken,
       };
+    } else {
+      headers = {
+        'X-TOKEN': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6NiwiVXNlcm5hbWUiOiJqaWFuZ2ppYW5nIiwiSWNvbiI6ImltYWdlL3Rlc3QxLmpwZyIsImV4cCI6MTY0OTE0MjI1OCwiaXNzIjoiamlhbmdqaWFuZyJ9.Hf8HDHlU2mDBy8uaIzZCjHCShMSpcvRepnxaRT_PDNo',
+      };
     }
     return headers;
   }

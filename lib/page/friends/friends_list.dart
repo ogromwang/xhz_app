@@ -62,40 +62,28 @@ class _FriendsScreenState extends State<FriendsScreen> with TickerProviderStateM
     super.initState();
   }
 
-  Iterable<void> requestData() sync* {
-    BaseOptions options = BaseOptions();
-    ///请求header的配置
-    options.headers["X-TOKEN"] = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6NiwiVXNlcm5hbWUiOiJqaWFuZ2ppYW5nIiwiSWNvbiI6ImltYWdlL3Rlc3QxLmpwZyIsImV4cCI6MTY0OTE0MjI1OCwiaXNzIjoiamlhbmdqaWFuZyJ9.Hf8HDHlU2mDBy8uaIzZCjHCShMSpcvRepnxaRT_PDNo';
-    options.contentType="application/json";
-    options.method="GET";
-    options.connectTimeout=30000;
-    ///创建 dio
-    Dio dio = Dio(options);
-
-    ///请求地址 获取用户列表
-    String url = "http://172.16.68.10/v1/account/friends?page=$page&pageSize=$pageSize";
-
-    ///发起get请求
-    dio.request(url).then((value) {
-      // 请求成功
-      if (value.statusCode == 200) {
-        var result = AccountFriendResult.fromJson(value.data);
-        if (result.code == 200) {
-          if (result.data != null) {
-            data.list.addAll(result.data.list);
-            data.total = result.data.total;
-            page++;
-          }
-        } else {
-          // 提示错误
-        }
+  Future<void> requestData() async {
+    var params = {
+      "page" : page,
+      "pageSize" : pageSize
+    };
+    var value = await HttpUtils.get("v1/account/friends", params: params);
+    print("得到的value为:$value");
+    // 请求成功
+    if (value.statusCode == 200) {
+      var result = AccountFriendResult.fromJson(value.data);
+      if (result.code == 200) {
+        setState(() {
+          data.list.addAll(result.data.list);
+          data.total = result.data.total;
+          page++;
+        });
       } else {
-
+        // 提示错误
       }
+    } else {
 
-    }).onError((error, stackTrace) {
-      print(error);
-    });
+    }
 
   }
 
@@ -187,9 +175,22 @@ class _FriendsScreenState extends State<FriendsScreen> with TickerProviderStateM
                     //列表
                     SliverList(
                       delegate: SliverChildBuilderDelegate((content, index)  {
-                        print("当前index: $index");
-                        return _getItem(context, index);
-                      }, childCount: 100),
+                        var length = data.list.length;
+                        if (index == length) {
+                          requestData();
+                          return new Center(
+                            child: new Container(
+                              margin: const EdgeInsets.only(top: 8.0),
+                              width: 32.0,
+                              height: 32.0,
+                              child: const CircularProgressIndicator(),
+                            ),
+                          );
+                        } else if (index > length) {
+                          return null;
+                        }
+                        return _getItem(content, index);
+                      }),
                     )
                   ],
                 ),

@@ -4,9 +4,21 @@ import 'package:demo_app/routes/routes.dart';
 import 'package:demo_app/request/dio.dart';
 
 
-void main() {
-  HttpUtils.init(baseUrl: "172.16.68.10");
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // debugPaintSizeEnabled = true;
+  await init();
   runApp(BootApplication());
+}
+
+Future<void> init() async {
+  // 初始化本地存储类
+  await SpUtil().init();
+  // 初始化request类
+  HttpUtils.init(
+    baseUrl: "172.16.68.10",
+  );
+  print("全局注入");
 }
 
 class BootApplication extends StatelessWidget {
