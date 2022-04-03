@@ -1,33 +1,35 @@
 import 'dart:async';
 
 import 'package:demo_app/common/app_theme.dart';
-import 'package:demo_app/model/account/my_friends_list_model.dart';
+import 'package:demo_app/common/widgets.dart';
+import 'package:demo_app/model/account/find_friends_list_model.dart';
 import 'package:demo_app/routes/navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class MyFriendsList extends StatefulWidget {
+class FindFriends extends StatefulWidget {
 
-  const MyFriendsList({Key? key}) : super(key: key);
+  const FindFriends({Key? key}) : super(key: key);
 
   @override
-  _MyFriendsListState createState() => _MyFriendsListState();
+  _FindFriendsState createState() => _FindFriendsState();
 }
 
-class _MyFriendsListState extends State<MyFriendsList> {
+class _FindFriendsState extends State<FindFriends> {
   late EasyRefreshController _controller;
   late ScrollController _scrollController;
 
-  var stateModel = FriendsListModel();
+  var stateModel = SearchFriendsListModel();
 
   // 控制结束
   bool _enableControlFinish = false;
 
   // 是否开启刷新
-  bool _enableRefresh = true;
+  bool _enableRefresh = false;
 
   // 是否开启加载
-  bool _enableLoad = true;
+  bool _enableLoad = false;
 
 
   @override
@@ -74,16 +76,38 @@ class _MyFriendsListState extends State<MyFriendsList> {
     );
   }
 
+
   Widget _scaffold(BuildContext context) {
     return Scaffold(
-        floatingActionButton: FloatingAddFriendButton(),
         body: Column(children: <Widget>[
           getAppBarUI(),
+          SearchBar.custom(
+            (text) {
+              stateModel.username = text;
+            },
+            () {
+              // 每次点击搜索都是从第一页开始, 相当于刷新
+              stateModel.refreshData(context).then((value) {
+                if (mounted) {
+                  setState(() {
+                    stateModel = stateModel;
+                    var noMore = stateModel.listData.list.length >= stateModel.listData.total;
+                    if (!noMore) {
+                      _enableLoad = true;
+                    }
+                    if (!_enableControlFinish) {
+                      _controller.finishLoad(noMore: noMore);
+                    }
+                  });
+                }
+              });
+            }
+          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(top: 8),
               child: EasyRefresh.custom(
-                firstRefresh: true,
+                firstRefresh: false,
                 enableControlFinishRefresh: true,
                 enableControlFinishLoad: true,
                 taskIndependence: false,
@@ -91,16 +115,9 @@ class _MyFriendsListState extends State<MyFriendsList> {
                 scrollController: _scrollController,
                 reverse: false,
                 scrollDirection: Axis.vertical,
-                topBouncing: true,
+                topBouncing: false,
                 bottomBouncing: true,
-                firstRefreshWidget: Container(
-                  width: double.infinity,
-                  height: double.infinity,
-                  child: const Center(
-                      child: Text("loading...")
-                  ),
-                ),
-                header: BallPulseHeader(),
+                // header: BallPulseHeader(),
                 footer: BallPulseFooter(),
                 onRefresh: _enableRefresh ? () async {
                   stateModel.refreshData(context).then((value) {
@@ -169,7 +186,7 @@ class _MyFriendsListState extends State<MyFriendsList> {
                flex: 2,
                child: Center(
                  child: Text(
-                   "我的好友",
+                   "搜寻用户",
                    style: TextStyle(
                      fontWeight: FontWeight.w600,
                      fontSize: 22,

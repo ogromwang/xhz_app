@@ -67,7 +67,7 @@ class FloatingAddFriendButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: () {
-        Navigator.pushNamed(context, '/search');
+        Navigator.pushNamed(context, '/find');
       },
       child: const Icon(Icons.search, color: Colors.white,),
     );
