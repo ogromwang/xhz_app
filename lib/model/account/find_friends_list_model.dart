@@ -4,7 +4,7 @@ import 'package:demo_app/request/dio.dart';
 
 class SearchFriendsListModel {
   int currentPage = 1;
-  int pageSize = 2;
+  int pageSize = 20;
   String username = "";
 
   final AccountFriendResultData _data = AccountFriendResultData([], 0);
@@ -29,6 +29,16 @@ class SearchFriendsListModel {
     } else {
       // 提示错误
     }
+  }
+
+  Future<void> applyAddFriend(BuildContext context, int friendId) async {
+    var data = {
+      "id": friendId
+    };
+    var value = await HttpUtils.post("/v1/account/friends/apply", data: data);
+    print("申请添加好友, 好友ID: $friendId; 结果: $value");
+    // {code: 200, data: true, error: }
+    Navigator.maybePop(context);
   }
 
   //上拉刷新数据的方法

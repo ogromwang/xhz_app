@@ -81,7 +81,7 @@ class _MyFriendsListState extends State<MyFriendsList> {
           getAppBarUI(),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.only(top: 8),
+              padding: const EdgeInsets.only(top: 16),
               child: EasyRefresh.custom(
                 firstRefresh: true,
                 enableControlFinishRefresh: true,

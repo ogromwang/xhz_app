@@ -7,6 +7,7 @@ import 'package:demo_app/routes/navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class FindFriends extends StatefulWidget {
 
@@ -47,6 +48,33 @@ class _FindFriendsState extends State<FindFriends> {
     );
   }
 
+  Widget _getSliceItem(BuildContext context, int index) {
+    var item = stateModel.listData.list[index];
+    return Slidable(
+      key: ValueKey("$index"),
+      // 同一组
+      groupTag: "ccc",
+      child: _getItem(context, index),
+      // 左侧按钮列表
+      startActionPane: ActionPane(
+        extentRatio: 0.3,
+        // 滑出选项的面板 动画
+        motion: const DrawerMotion(),
+        children: [
+          SlidableAction(
+            onPressed: (_) {
+              stateModel.applyAddFriend(context, item.id);
+            },
+            backgroundColor: Colors.teal,
+            icon: Icons.account_circle_sharp,
+            label: '申请好友',
+          )
+        ],
+
+      )
+    );
+  }
+
   Widget _getItem(BuildContext context, int index) {
     var item = stateModel.listData.list[index];
     return Padding(
@@ -66,7 +94,10 @@ class _FindFriendsState extends State<FindFriends> {
               ),
             ),
             SizedBox(
-              width: MediaQuery.of(context).size.width - 100,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width - 100,
               child: Text(item.username, overflow: TextOverflow.ellipsis),
             ),
           ],
@@ -82,26 +113,26 @@ class _FindFriendsState extends State<FindFriends> {
         body: Column(children: <Widget>[
           getAppBarUI(),
           SearchBar.custom(
-            (text) {
-              stateModel.username = text;
-            },
-            () {
-              // 每次点击搜索都是从第一页开始, 相当于刷新
-              stateModel.refreshData(context).then((value) {
-                if (mounted) {
-                  setState(() {
-                    stateModel = stateModel;
-                    var noMore = stateModel.listData.list.length >= stateModel.listData.total;
-                    if (!noMore) {
-                      _enableLoad = true;
-                    }
-                    if (!_enableControlFinish) {
-                      _controller.finishLoad(noMore: noMore);
-                    }
-                  });
-                }
-              });
-            }
+                  (text) {
+                stateModel.username = text;
+              },
+                  () {
+                // 每次点击搜索都是从第一页开始, 相当于刷新
+                stateModel.refreshData(context).then((value) {
+                  if (mounted) {
+                    setState(() {
+                      stateModel = stateModel;
+                      var noMore = stateModel.listData.list.length >= stateModel.listData.total;
+                      if (!noMore) {
+                        _enableLoad = true;
+                      }
+                      if (!_enableControlFinish) {
+                        _controller.finishLoad(noMore: noMore);
+                      }
+                    });
+                  }
+                });
+              }
           ),
           Expanded(
             child: Padding(
@@ -130,7 +161,6 @@ class _FindFriendsState extends State<FindFriends> {
                         _controller.finishRefresh();
                       }
                     }
-
                   });
                 } : null,
                 onLoad: _enableLoad ? () async {
@@ -148,7 +178,7 @@ class _FindFriendsState extends State<FindFriends> {
                 slivers: <Widget>[
                   SliverList(
                     delegate: SliverChildBuilderDelegate((context, index) {
-                      return _getItem(context, index);
+                      return _getSliceItem(context, index);
                     },
                       childCount: stateModel.listData.list.length,
                     ),
@@ -156,49 +186,54 @@ class _FindFriendsState extends State<FindFriends> {
                 ],
               ),
             ),
-            )
+          )
         ]));
   }
 
   // 顶部的布局
-   Widget getAppBarUI() {
-     return Container(
-       decoration: BoxDecoration(
-         color: HomeAppTheme.buildLightTheme().backgroundColor,
-         boxShadow: <BoxShadow>[
-           BoxShadow(color: Colors.grey.withOpacity(0.2), offset: const Offset(0, 2), blurRadius: 8.0),
-         ],
-       ),
-       child: Padding(
-         padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top, left: 8, right: 8),
-         child: Row(
-           children: <Widget>[
-             // 左箭头
-             Container(
-               alignment: Alignment.centerLeft,
-               width: AppBar().preferredSize.height + 40,
-               height: AppBar().preferredSize.height,
-               child: const Material(color: Colors.transparent, child: Text("")),
-             ),
+  Widget getAppBarUI() {
+    return Container(
+      decoration: BoxDecoration(
+        color: HomeAppTheme
+            .buildLightTheme()
+            .backgroundColor,
+        boxShadow: <BoxShadow>[
+          BoxShadow(color: Colors.grey.withOpacity(0.2), offset: const Offset(0, 2), blurRadius: 8.0),
+        ],
+      ),
+      child: Padding(
+        padding: EdgeInsets.only(top: MediaQuery
+            .of(context)
+            .padding
+            .top, left: 8, right: 8),
+        child: Row(
+          children: <Widget>[
+            // 左箭头
+            Container(
+              alignment: Alignment.centerLeft,
+              width: AppBar().preferredSize.height + 40,
+              height: AppBar().preferredSize.height,
+              child: const Material(color: Colors.transparent, child: Text("")),
+            ),
 
-             // 中间文字
-             const Expanded(
-               flex: 2,
-               child: Center(
-                 child: Text(
-                   "搜寻用户",
-                   style: TextStyle(
-                     fontWeight: FontWeight.w600,
-                     fontSize: 22,
-                   ),
-                 ),
-               ),
-             ),
+            // 中间文字
+            const Expanded(
+              flex: 2,
+              child: Center(
+                child: Text(
+                  "搜寻用户",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 22,
+                  ),
+                ),
+              ),
+            ),
 
-             Spacer()
-           ],
-         ),
-       ),
-     );
-   }
+            Spacer()
+          ],
+        ),
+      ),
+    );
+  }
 }
