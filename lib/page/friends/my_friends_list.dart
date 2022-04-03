@@ -104,19 +104,15 @@ class _MyFriendsListState extends State<MyFriendsList> {
                 scrollDirection: Axis.vertical,
                 topBouncing: true,
                 bottomBouncing: true,
-                header: _enableRefresh
-                    ? ClassicalHeader(
-                  enableInfiniteRefresh: false,
-                  bgColor: _headerFloat ? Theme.of(context).primaryColor : Colors.transparent,
-                  infoColor: _headerFloat ? Colors.black87 : Colors.teal,
-                  float: _headerFloat,
-                  enableHapticFeedback: _vibration,
-                ) : null,
-                footer: _enableLoad
-                    ? ClassicalFooter(
-                  enableInfiniteLoad: _enableInfiniteLoad,
-                  enableHapticFeedback: _vibration,
-                ) : null,
+                firstRefreshWidget: Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  child: const Center(
+                      child: Text("loading...")
+                  ),
+                ),
+                header: BallPulseHeader(),
+                footer: BallPulseFooter(),
                 onRefresh: _enableRefresh ? () async {
                   stateModel.refreshData(context).then((value) {
                     if (mounted) {

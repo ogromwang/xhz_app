@@ -3,7 +3,7 @@ import 'package:demo_app/custom_drawer/drawer_user_controller.dart';
 import 'package:demo_app/custom_drawer/home_drawer.dart';
 import 'package:demo_app/page/home/home_list.dart';
 import 'package:flutter/material.dart';
-import 'package:demo_app/page/friends/friends_list_1.dart';
+import 'package:demo_app/page/friends/my_friends_list.dart';
 
 class NavigationHomeScreen extends StatefulWidget {
   @override
