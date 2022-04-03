@@ -128,7 +128,7 @@ class Http {
     dio = Dio(options);
 
     // 添加request拦截器
-    // dio.interceptors.add(RequestInterceptor());
+    dio.interceptors.add(MyInterceptor());
     // 添加error拦截器
     dio.interceptors.add(ErrorInterceptor());
     // // 添加cache拦截器
@@ -502,6 +502,24 @@ class CacheObject {
 
   @override
   int get hashCode => response.realUri.hashCode;
+}
+
+class MyInterceptor extends Interceptor {
+
+  @override
+  Future onRequest(RequestOptions options) {
+    print("封装的 dio 开始请求: ");
+    print("==> uri: ${options.uri}");
+    print("==> params: ${options.queryParameters}");
+    print("==> data: ${options.data}");
+    return super.onRequest(options);
+  }
+
+  @override
+  Future onResponse(Response response) {
+    print("封装的 dio 得到响应: $response");
+    return super.onResponse(response);
+  }
 }
 
 class NetCacheInterceptor extends Interceptor {

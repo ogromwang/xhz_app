@@ -16,7 +16,7 @@ Future<void> init() async {
   await SpUtil().init();
   // 初始化request类
   HttpUtils.init(
-    baseUrl: "172.16.68.10",
+    baseUrl: "http://192.168.0.116/",
   );
   print("全局注入");
 }

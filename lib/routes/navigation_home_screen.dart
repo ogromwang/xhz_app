@@ -3,7 +3,7 @@ import 'package:demo_app/custom_drawer/drawer_user_controller.dart';
 import 'package:demo_app/custom_drawer/home_drawer.dart';
 import 'package:demo_app/page/home/home_list.dart';
 import 'package:flutter/material.dart';
-import 'package:demo_app/page/friends/friends_list.dart';
+import 'package:demo_app/page/friends/friends_list_1.dart';
 
 class NavigationHomeScreen extends StatefulWidget {
   @override
@@ -56,7 +56,7 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
           break;
         case DrawerIndex.Friends:
           setState(() {
-            screenView = FriendsScreen();
+            screenView = MyFriendsList();
           });
           break;
         case DrawerIndex.About:
