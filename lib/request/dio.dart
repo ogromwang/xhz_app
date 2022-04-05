@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:connectivity/connectivity.dart';
+import 'package:demo_app/common/toast.dart';
+import 'package:demo_app/model/account/result/account.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -191,7 +193,7 @@ class Http {
       };
     } else {
       headers = {
-        'X-TOKEN': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6NiwiVXNlcm5hbWUiOiJqaWFuZ2ppYW5nIiwiSWNvbiI6ImltYWdlL3Rlc3QxLmpwZyIsImV4cCI6MTY0OTE0MjI1OCwiaXNzIjoiamlhbmdqaWFuZyJ9.Hf8HDHlU2mDBy8uaIzZCjHCShMSpcvRepnxaRT_PDNo',
+        'X-TOKEN': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6NiwiVXNlcm5hbWUiOiJqaWFuZ2ppYW5nIiwiUHJvZmlsZVBpY3R1cmUiOiJpbWFnZS90ZXN0MS5qcGciLCJleHAiOjE2NDk3NDkwODIsImlzcyI6ImppYW5namlhbmcifQ.KOGTHcqVeMrlUCz-JhCZoOrfONeH3uKLuCqpmq_CytM",
       };
     }
     return headers;
@@ -518,6 +520,16 @@ class MyInterceptor extends Interceptor {
   @override
   Future onResponse(Response response) {
     print("封装的 dio 得到响应: $response");
+    try {
+      var resp = response.data as Map<String, dynamic>;
+      var err = resp['error'] as String;
+      if (err != "") {
+        ToastUtil.err(err);
+      }
+    } catch (e) {
+      print("resp try catch出现错误 $e");
+    }
+
     return super.onResponse(response);
   }
 }

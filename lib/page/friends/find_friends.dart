@@ -114,7 +114,7 @@ class _FindFriendsState extends State<FindFriends> {
           getAppBarUI(),
           SearchBar.custom(
                   (text) {
-                stateModel.username = text;
+                stateModel.username = text!;
               },
                   () {
                 // 每次点击搜索都是从第一页开始, 相当于刷新

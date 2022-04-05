@@ -2,7 +2,7 @@ import 'package:demo_app/common/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-typedef OnChanged = void Function(String text);
+typedef OnChanged = void Function(String? text);
 typedef OnTap = void Function();
 
 class SearchBar extends StatefulWidget {
@@ -88,4 +88,50 @@ Widget getSearchBarUI(OnChanged onChanged, OnTap onTap) {
       ],
     ),
   );
+}
+
+class SwitchAppBarButton extends StatefulWidget {
+
+  OnChanged onChanged;
+  List<String> values;
+  String? value;
+
+  SwitchAppBarButton.custom(this.onChanged, this.values, {String? value, Key? key}) : super(key: key) {
+    if (value != null) {
+      this.value = value;
+    } else {
+      this.value = values[0];
+    }
+  }
+
+  @override
+  State<SwitchAppBarButton> createState() => _SwitchAppBarButtonState();
+}
+
+class _SwitchAppBarButtonState extends State<SwitchAppBarButton> {
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          value: super.widget.value,
+          onChanged: super.widget.onChanged,
+          items: super.widget.values.map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(
+                value,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 22,
+                ),
+              ),
+            );
+          })
+              .toList(),
+        ),
+      )
+    );
+  }
 }
