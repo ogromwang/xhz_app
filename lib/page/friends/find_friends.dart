@@ -148,7 +148,7 @@ class _FindFriendsState extends State<FindFriends> {
           padding: const EdgeInsets.only(top: 8),
           child: EasyRefresh.custom(
             firstRefresh: false,
-            emptyWidget: Empty.empty(stateModel.listData.list.length),
+            emptyWidget: EasyRefreshUtil.empty(stateModel.listData.list.length),
             enableControlFinishRefresh: true,
             enableControlFinishLoad: true,
             taskIndependence: false,

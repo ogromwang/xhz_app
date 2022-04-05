@@ -1,12 +1,12 @@
 import 'package:demo_app/common/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 typedef OnChanged = void Function(String? text);
 typedef OnTap = void Function();
 
 class SearchBar extends StatefulWidget {
-
   OnChanged onChanged;
   OnTap onTap;
 
@@ -17,7 +17,6 @@ class SearchBar extends StatefulWidget {
 }
 
 class _SearchBarState extends State<SearchBar> {
-
   _SearchBarState();
 
   @override
@@ -91,7 +90,6 @@ Widget getSearchBarUI(OnChanged onChanged, OnTap onTap) {
 }
 
 class SwitchAppBarButton extends StatefulWidget {
-
   OnChanged onChanged;
   List<String> values;
   String? value;
@@ -109,62 +107,90 @@ class SwitchAppBarButton extends StatefulWidget {
 }
 
 class _SwitchAppBarButtonState extends State<SwitchAppBarButton> {
-
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-          value: super.widget.value,
-          onChanged: super.widget.onChanged,
-          items: super.widget.values.map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(
-                value,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 22,
-                ),
+        child: DropdownButtonHideUnderline(
+      child: DropdownButton<String>(
+        value: super.widget.value,
+        onChanged: super.widget.onChanged,
+        items: super.widget.values.map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(
+              value,
+              style: const TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 22,
               ),
-            );
-          })
-              .toList(),
-        ),
-      )
-    );
+            ),
+          );
+        }).toList(),
+      ),
+    ));
   }
 }
 
-class Empty {
+class EasyRefreshUtil {
+  static Widget firstShow() {
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      child: Center(
+          child: SizedBox(
+        height: 200.0,
+        width: 300.0,
+        child: Card(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                width: 50.0,
+                height: 50.0,
+                child: SpinKitFadingCube(
+                  color: Colors.orangeAccent,
+                  size: 25.0,
+                ),
+              ),
+              Container(
+                child: Text("正在加载....", style: TextStyle(fontWeight: FontWeight.w200)),
+              )
+            ],
+          ),
+        ),
+      )),
+    );
+  }
+
   static Container? empty(int count) {
     return count == 0
         ? Container(
-      height: double.infinity,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          const Expanded(
-            child: SizedBox(),
-            flex: 2,
-          ),
-          SizedBox(
-            width: 100.0,
-            height: 100.0,
-            child: Image.asset('assets/images/nodata.png'),
-          ),
-          Text(
-            "暂无数据",
-            style: TextStyle(fontSize: 16.0, color: Colors.grey[400]),
-          ),
-          const Expanded(
-            child: SizedBox(),
-            flex: 3,
-          ),
-        ],
-      ),
-    )
+            height: double.infinity,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                const Expanded(
+                  child: SizedBox(),
+                  flex: 2,
+                ),
+                SizedBox(
+                  width: 100.0,
+                  height: 100.0,
+                  child: Image.asset('assets/images/nodata.png'),
+                ),
+                Text(
+                  "暂无数据",
+                  style: TextStyle(fontSize: 16.0, color: Colors.grey[400]),
+                ),
+                const Expanded(
+                  child: SizedBox(),
+                  flex: 3,
+                ),
+              ],
+            ),
+          )
         : null;
   }
 }

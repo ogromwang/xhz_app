@@ -109,7 +109,8 @@ class _MyFriendsListState extends State<MyFriendsList> {
       padding: const EdgeInsets.only(top: 16),
       child: EasyRefresh.custom(
         firstRefresh: true,
-        emptyWidget: Empty.empty(stateModel.listData.list.length),
+        firstRefreshWidget: EasyRefreshUtil.firstShow(),
+        emptyWidget: EasyRefreshUtil.empty(stateModel.listData.list.length),
         enableControlFinishRefresh: true,
         enableControlFinishLoad: true,
         taskIndependence: false,
@@ -119,11 +120,6 @@ class _MyFriendsListState extends State<MyFriendsList> {
         scrollDirection: Axis.vertical,
         topBouncing: true,
         bottomBouncing: true,
-        firstRefreshWidget: Container(
-          width: double.infinity,
-          height: double.infinity,
-          child: const Center(child: Text("loading...")),
-        ),
         header: BallPulseHeader(),
         footer: BallPulseFooter(),
         onRefresh: _enableRefresh
@@ -176,7 +172,7 @@ class _MyFriendsListState extends State<MyFriendsList> {
     return Padding(
       padding: const EdgeInsets.only(top: 16),
       child: EasyRefresh.custom(
-        emptyWidget: Empty.empty(applyFriendsModel.listData.list.length),
+        emptyWidget: EasyRefreshUtil.empty(applyFriendsModel.listData.list.length),
         firstRefresh: true,
         enableControlFinishRefresh: true,
         enableControlFinishLoad: true,
