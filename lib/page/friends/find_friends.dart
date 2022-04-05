@@ -10,7 +10,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class FindFriends extends StatefulWidget {
-
   const FindFriends({Key? key}) : super(key: key);
 
   @override
@@ -32,7 +31,6 @@ class _FindFriendsState extends State<FindFriends> {
   // 是否开启加载
   bool _enableLoad = false;
 
-
   @override
   void initState() {
     super.initState();
@@ -51,28 +49,26 @@ class _FindFriendsState extends State<FindFriends> {
   Widget _getSliceItem(BuildContext context, int index) {
     var item = stateModel.listData.list[index];
     return Slidable(
-      key: ValueKey("$index"),
-      // 同一组
-      groupTag: "ccc",
-      child: _getItem(context, index),
-      // 左侧按钮列表
-      startActionPane: ActionPane(
-        extentRatio: 0.3,
-        // 滑出选项的面板 动画
-        motion: const DrawerMotion(),
-        children: [
-          SlidableAction(
-            onPressed: (_) {
-              stateModel.applyAddFriend(context, item.id);
-            },
-            backgroundColor: Colors.teal,
-            icon: Icons.account_circle_sharp,
-            label: '申请好友',
-          )
-        ],
-
-      )
-    );
+        key: ValueKey("$index"),
+        // 同一组
+        groupTag: "ccc",
+        child: _getItem(context, index),
+        // 左侧按钮列表
+        startActionPane: ActionPane(
+          extentRatio: 0.3,
+          // 滑出选项的面板 动画
+          motion: const DrawerMotion(),
+          children: [
+            SlidableAction(
+              onPressed: (_) {
+                stateModel.applyAddFriend(context, item.id);
+              },
+              backgroundColor: Colors.teal,
+              icon: Icons.account_circle_sharp,
+              label: '申请好友',
+            )
+          ],
+        ));
   }
 
   Widget _getItem(BuildContext context, int index) {
@@ -80,132 +76,146 @@ class _FindFriendsState extends State<FindFriends> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 4),
       child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-        Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 10),
-              child: SizedBox(
-                height: 60,
-                width: 60,
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(40.0)),
-                  child: Image.network('http://${item.profilePicture}', fit: BoxFit.cover),
+        Slidable(
+            key: ValueKey("$index"),
+            // 同一组
+            groupTag: "ccc",
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 10),
+                  child: SizedBox(
+                    height: 60,
+                    width: 60,
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.all(Radius.circular(40.0)),
+                      child: Image.network('http://${item.profilePicture}', fit: BoxFit.cover),
+                    ),
+                  ),
                 ),
-              ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width - 100,
+                  child: Text(item.username, overflow: TextOverflow.ellipsis),
+                ),
+              ],
             ),
-            SizedBox(
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width - 100,
-              child: Text(item.username, overflow: TextOverflow.ellipsis),
-            ),
-          ],
-        ),
+            // 左侧按钮列表
+            startActionPane: ActionPane(
+              extentRatio: 0.3,
+              // 滑出选项的面板 动画
+              motion: const DrawerMotion(),
+              children: [
+                SlidableAction(
+                  onPressed: (_) {
+                    stateModel.applyAddFriend(context, item.id);
+                  },
+                  backgroundColor: Colors.teal,
+                  icon: Icons.account_circle_sharp,
+                  label: '申请好友',
+                )
+              ],
+            )),
         Divider()
       ]),
     );
   }
 
-
   Widget _scaffold(BuildContext context) {
     return Scaffold(
         body: Column(children: <Widget>[
-          getAppBarUI(),
-          SearchBar.custom(
-                  (text) {
-                stateModel.username = text!;
-              },
-                  () {
-                // 每次点击搜索都是从第一页开始, 相当于刷新
-                stateModel.refreshData(context).then((value) {
-                  if (mounted) {
-                    setState(() {
-                      stateModel = stateModel;
-                      var noMore = stateModel.listData.list.length >= stateModel.listData.total;
-                      if (!noMore) {
-                        _enableLoad = true;
-                      }
-                      if (!_enableControlFinish) {
-                        _controller.finishLoad(noMore: noMore);
+        getAppBarUI(),
+        SearchBar.custom((text) {
+          stateModel.username = text!;
+        }, () {
+          // 每次点击搜索都是从第一页开始, 相当于刷新
+          stateModel.refreshData(context).then((value) {
+            if (mounted) {
+              setState(() {
+                stateModel = stateModel;
+                var noMore = stateModel.listData.list.length >= stateModel.listData.total;
+                if (!noMore) {
+                  _enableLoad = true;
+                }
+                if (!_enableControlFinish) {
+                  _controller.finishLoad(noMore: noMore);
+                }
+              });
+            }
+          });
+        }),
+      Expanded(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 8),
+          child: EasyRefresh.custom(
+            firstRefresh: false,
+            emptyWidget: Empty.empty(stateModel.listData.list.length),
+            enableControlFinishRefresh: true,
+            enableControlFinishLoad: true,
+            taskIndependence: false,
+            controller: _controller,
+            scrollController: _scrollController,
+            reverse: false,
+            scrollDirection: Axis.vertical,
+            topBouncing: false,
+            bottomBouncing: true,
+            // header: BallPulseHeader(),
+            footer: BallPulseFooter(),
+            onRefresh: _enableRefresh
+                ? () async {
+                    stateModel.refreshData(context).then((value) {
+                      if (mounted) {
+                        setState(() {
+                          stateModel = stateModel;
+                        });
+                        if (!_enableControlFinish) {
+                          _controller.resetLoadState();
+                          _controller.finishRefresh();
+                        }
                       }
                     });
                   }
-                });
-              }
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: EasyRefresh.custom(
-                firstRefresh: false,
-                enableControlFinishRefresh: true,
-                enableControlFinishLoad: true,
-                taskIndependence: false,
-                controller: _controller,
-                scrollController: _scrollController,
-                reverse: false,
-                scrollDirection: Axis.vertical,
-                topBouncing: false,
-                bottomBouncing: true,
-                // header: BallPulseHeader(),
-                footer: BallPulseFooter(),
-                onRefresh: _enableRefresh ? () async {
-                  stateModel.refreshData(context).then((value) {
-                    if (mounted) {
-                      setState(() {
-                        stateModel = stateModel;
-                      });
-                      if (!_enableControlFinish) {
-                        _controller.resetLoadState();
-                        _controller.finishRefresh();
+                : null,
+            onLoad: _enableLoad
+                ? () async {
+                    stateModel.loadMoreData(context).then((value) {
+                      if (mounted) {
+                        setState(() {
+                          stateModel = stateModel;
+                        });
+                        if (!_enableControlFinish) {
+                          _controller.finishLoad(noMore: stateModel.listData.list.length >= stateModel.listData.total);
+                        }
                       }
-                    }
-                  });
-                } : null,
-                onLoad: _enableLoad ? () async {
-                  stateModel.loadMoreData(context).then((value) {
-                    if (mounted) {
-                      setState(() {
-                        stateModel = stateModel;
-                      });
-                      if (!_enableControlFinish) {
-                        _controller.finishLoad(noMore: stateModel.listData.list.length >= stateModel.listData.total);
-                      }
-                    }
-                  });
-                } : null,
-                slivers: <Widget>[
-                  SliverList(
-                    delegate: SliverChildBuilderDelegate((context, index) {
-                      return _getSliceItem(context, index);
-                    },
-                      childCount: stateModel.listData.list.length,
-                    ),
-                  ),
-                ],
+                    });
+                  }
+                : null,
+            slivers: <Widget>[
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    return _getSliceItem(context, index);
+                  },
+                  childCount: stateModel.listData.list.length,
+                ),
               ),
-            ),
-          )
-        ]));
+            ],
+          ),
+        ),
+      )
+    ]));
   }
 
   // 顶部的布局
   Widget getAppBarUI() {
     return Container(
       decoration: BoxDecoration(
-        color: HomeAppTheme
-            .buildLightTheme()
-            .backgroundColor,
+        color: HomeAppTheme.buildLightTheme().backgroundColor,
         boxShadow: <BoxShadow>[
           BoxShadow(color: Colors.grey.withOpacity(0.2), offset: const Offset(0, 2), blurRadius: 8.0),
         ],
       ),
       child: Padding(
-        padding: EdgeInsets.only(top: MediaQuery
-            .of(context)
-            .padding
-            .top, left: 8, right: 8),
+        padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top, left: 8, right: 8),
         child: Row(
           children: <Widget>[
             // 左箭头

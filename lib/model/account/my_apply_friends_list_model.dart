@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:demo_app/model/account/result/account.dart';
 import 'package:demo_app/request/dio.dart';
@@ -26,6 +28,19 @@ class ApplyFriendsListModel {
     } else {
       // 提示错误
     }
+  }
+
+  // 同意:1 或 拒绝:2
+  Future<void> handleApply(BuildContext context, int friendId, int status, void Function() callback) async {
+    var data = {
+      "id": friendId,
+      "status": status
+    };
+    var value = await HttpUtils.post("v1/account/friends/handle", data: data);
+    // 请求成功
+    print("处理好友, 好友ID: $friendId; 结果: $value");
+    // {code: 200, data: true, error: }
+    callback();
   }
 
   //上拉刷新数据的方法

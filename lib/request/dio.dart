@@ -373,6 +373,7 @@ class ErrorInterceptor extends Interceptor {
     AppException appException = AppException.create(err);
     // 错误提示
     debugPrint('DioError===: ${appException.toString()}');
+    ToastUtil.err("${appException._code} ${appException._message}");
     err.error = appException;
     return super.onError(err);
   }

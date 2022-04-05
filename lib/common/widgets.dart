@@ -135,3 +135,36 @@ class _SwitchAppBarButtonState extends State<SwitchAppBarButton> {
     );
   }
 }
+
+class Empty {
+  static Container? empty(int count) {
+    return count == 0
+        ? Container(
+      height: double.infinity,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          const Expanded(
+            child: SizedBox(),
+            flex: 2,
+          ),
+          SizedBox(
+            width: 100.0,
+            height: 100.0,
+            child: Image.asset('assets/images/nodata.png'),
+          ),
+          Text(
+            "暂无数据",
+            style: TextStyle(fontSize: 16.0, color: Colors.grey[400]),
+          ),
+          const Expanded(
+            child: SizedBox(),
+            flex: 3,
+          ),
+        ],
+      ),
+    )
+        : null;
+  }
+}

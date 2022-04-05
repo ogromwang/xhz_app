@@ -7,10 +7,11 @@ import 'package:demo_app/model/account/my_friends_list_model.dart';
 import 'package:demo_app/routes/navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class Controllers {
-  EasyRefreshController _controller = EasyRefreshController();
-  ScrollController _scrollController = ScrollController();
+  final EasyRefreshController _controller = EasyRefreshController();
+  final ScrollController _scrollController = ScrollController();
 }
 
 class MyFriendsList extends StatefulWidget {
@@ -21,17 +22,14 @@ class MyFriendsList extends StatefulWidget {
 }
 
 class _MyFriendsListState extends State<MyFriendsList> {
-  late Controllers _controller1 = Controllers();
-  late Controllers _controller2 = Controllers();
-  late EasyRefreshController _controller;
-  late ScrollController _scrollController;
 
   var stateModel = FriendsListModel();
   var applyFriendsModel = ApplyFriendsListModel();
 
-  String _currChose = "";
   int _currIndex = 0;
+  String _currChose = "我的好友";
   static const List<String> _switchList = ["我的好友", "申请列表"];
+  late Map<int, Controllers> controllerMaps;
 
   // 控制结束
   bool _enableControlFinish = false;
@@ -45,6 +43,10 @@ class _MyFriendsListState extends State<MyFriendsList> {
   @override
   void initState() {
     super.initState();
+    controllerMaps = {
+      0: Controllers(),
+      1: Controllers(),
+    };
     _currChose = _switchList[0];
   }
 
@@ -74,7 +76,10 @@ class _MyFriendsListState extends State<MyFriendsList> {
               ),
             ),
             SizedBox(
-              width: MediaQuery.of(context).size.width - 100,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width - 100,
               child: Text(item.username, overflow: TextOverflow.ellipsis),
             ),
           ],
@@ -92,9 +97,9 @@ class _MyFriendsListState extends State<MyFriendsList> {
           getAppBarUI(),
           Expanded(
               child: IndexedStack(
-            index: _currIndex,
-            children: [_myFriends(context), _myApplyFriends(context)],
-          ))
+                index: _currIndex,
+                children: [_myFriends(context), _myApplyFriends(context)],
+              ))
         ]));
   }
 
@@ -104,11 +109,12 @@ class _MyFriendsListState extends State<MyFriendsList> {
       padding: const EdgeInsets.only(top: 16),
       child: EasyRefresh.custom(
         firstRefresh: true,
+        emptyWidget: Empty.empty(stateModel.listData.list.length),
         enableControlFinishRefresh: true,
         enableControlFinishLoad: true,
         taskIndependence: false,
-        controller: _controller1._controller,
-        scrollController: _controller1._scrollController,
+        controller: controllerMaps[0]!._controller,
+        scrollController: controllerMaps[0]!._scrollController,
         reverse: false,
         scrollDirection: Axis.vertical,
         topBouncing: true,
@@ -122,37 +128,38 @@ class _MyFriendsListState extends State<MyFriendsList> {
         footer: BallPulseFooter(),
         onRefresh: _enableRefresh
             ? () async {
-                stateModel.refreshData(context).then((value) {
-                  if (mounted) {
-                    setState(() {
-                      stateModel = stateModel;
-                    });
-                    if (!_enableControlFinish) {
-                      _controller1._controller.resetLoadState();
-                      _controller1._controller.finishRefresh();
-                    }
-                  }
-                });
+          stateModel.refreshData(context).then((value) {
+            if (mounted) {
+              setState(() {
+                stateModel = stateModel;
+              });
+              if (!_enableControlFinish) {
+                controllerMaps[0]!._controller.resetLoadState();
+                controllerMaps[0]!._controller.finishRefresh();
               }
+            }
+          });
+        }
             : null,
         onLoad: _enableLoad
             ? () async {
-                stateModel.loadMoreData(context).then((value) {
-                  if (mounted) {
-                    setState(() {
-                      stateModel = stateModel;
-                    });
-                    if (!_enableControlFinish) {
-                      _controller1._controller.finishLoad(noMore: stateModel.listData.list.length >= stateModel.listData.total);
-                    }
-                  }
-                });
+          stateModel.loadMoreData(context).then((value) {
+            if (mounted) {
+              setState(() {
+                stateModel = stateModel;
+              });
+              if (!_enableControlFinish) {
+                controllerMaps[0]!._controller
+                    .finishLoad(noMore: stateModel.listData.list.length >= stateModel.listData.total);
               }
+            }
+          });
+        }
             : null,
         slivers: <Widget>[
           SliverList(
             delegate: SliverChildBuilderDelegate(
-              (context, index) {
+                  (context, index) {
                 var item = stateModel.listData.list[index];
                 return _getItem(context, index, item);
               },
@@ -169,12 +176,13 @@ class _MyFriendsListState extends State<MyFriendsList> {
     return Padding(
       padding: const EdgeInsets.only(top: 16),
       child: EasyRefresh.custom(
+        emptyWidget: Empty.empty(applyFriendsModel.listData.list.length),
         firstRefresh: true,
         enableControlFinishRefresh: true,
         enableControlFinishLoad: true,
         taskIndependence: false,
-        controller: _controller2._controller,
-        scrollController: _controller2._scrollController,
+        controller: controllerMaps[1]!._controller,
+        scrollController: controllerMaps[1]!._scrollController,
         reverse: false,
         scrollDirection: Axis.vertical,
         topBouncing: true,
@@ -188,40 +196,40 @@ class _MyFriendsListState extends State<MyFriendsList> {
         footer: BallPulseFooter(),
         onRefresh: _enableRefresh
             ? () async {
-                applyFriendsModel.refreshData(context).then((value) {
-                  if (mounted) {
-                    setState(() {
-                      applyFriendsModel = applyFriendsModel;
-                    });
-                    if (!_enableControlFinish) {
-                      _controller2._controller.resetLoadState();
-                      _controller2._controller.finishRefresh();
-                    }
-                  }
-                });
+          applyFriendsModel.refreshData(context).then((value) {
+            if (mounted) {
+              setState(() {
+                applyFriendsModel = applyFriendsModel;
+              });
+              if (!_enableControlFinish) {
+                controllerMaps[1]!._controller.resetLoadState();
+                controllerMaps[1]!._controller.finishRefresh();
               }
+            }
+          });
+        }
             : null,
         onLoad: _enableLoad
             ? () async {
-                applyFriendsModel.loadMoreData(context).then((value) {
-                  if (mounted) {
-                    setState(() {
-                      applyFriendsModel = applyFriendsModel;
-                    });
-                    if (!_enableControlFinish) {
-                      _controller2._controller.finishLoad(
-                          noMore: applyFriendsModel.listData.list.length >= applyFriendsModel.listData.total);
-                    }
-                  }
-                });
+          applyFriendsModel.loadMoreData(context).then((value) {
+            if (mounted) {
+              setState(() {
+                applyFriendsModel = applyFriendsModel;
+              });
+              if (!_enableControlFinish) {
+                controllerMaps[1]!._controller.finishLoad(
+                    noMore: applyFriendsModel.listData.list.length >= applyFriendsModel.listData.total);
               }
+            }
+          });
+        }
             : null,
         slivers: <Widget>[
           SliverList(
             delegate: SliverChildBuilderDelegate(
-              (context, index) {
+                  (context, index) {
                 var item = applyFriendsModel.listData.list[index];
-                return _getItem(context, index, item);
+                return _getSliceItem(context, index, item);
               },
               childCount: applyFriendsModel.listData.list.length,
             ),
@@ -235,13 +243,18 @@ class _MyFriendsListState extends State<MyFriendsList> {
   Widget getAppBarUI() {
     return Container(
       decoration: BoxDecoration(
-        color: HomeAppTheme.buildLightTheme().backgroundColor,
+        color: HomeAppTheme
+            .buildLightTheme()
+            .backgroundColor,
         boxShadow: <BoxShadow>[
           BoxShadow(color: Colors.grey.withOpacity(0.2), offset: const Offset(0, 2), blurRadius: 8.0),
         ],
       ),
       child: Padding(
-        padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top, left: 8, right: 8),
+        padding: EdgeInsets.only(top: MediaQuery
+            .of(context)
+            .padding
+            .top, left: 8, right: 8),
         child: Row(
           children: <Widget>[
             // 左箭头
@@ -265,15 +278,80 @@ class _MyFriendsListState extends State<MyFriendsList> {
   Widget getCenterText() {
     return Center(
         child: SwitchAppBarButton.custom(
-      (text) {
-        setState(() {
-          _currChose = text!;
-          _currIndex = _switchList.indexOf(_currChose);
-        });
-        print("选中了 $text");
-      },
-      _switchList,
-      value: _currChose,
-    ));
+              (text) {
+            setState(() {
+              _currChose = text!;
+              _currIndex = _switchList.indexOf(_currChose);
+              controllerMaps[_currIndex]!._controller.callRefresh();
+            });
+            print("选中了 $text");
+          },
+          _switchList,
+          value: _currChose,
+        ));
+  }
+
+
+  Widget _getSliceItem(BuildContext context, int index, dynamic item) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+        Slidable(
+            key: ValueKey("$index"),
+            // 同一组
+            groupTag: "ccc",
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 10),
+                  child: SizedBox(
+                    height: 60,
+                    width: 60,
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.all(Radius.circular(40.0)),
+                      child: Image.network('http://${item.profilePicture}', fit: BoxFit.cover),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width - 100,
+                  child: Text(item.username, overflow: TextOverflow.ellipsis),
+                ),
+              ],
+            ),
+            // 左侧按钮列表
+            startActionPane: ActionPane(
+              extentRatio: 0.5,
+              // 滑出选项的面板 动画
+              motion: const DrawerMotion(),
+              children: [
+                SlidableAction(
+                  flex: 2,
+                  onPressed: (_) {
+                    applyFriendsModel.handleApply(
+                        context, item.id, 2, () => controllerMaps[1]!._controller.callRefresh());
+                  },
+                  backgroundColor: Colors.red,
+                  icon: Icons.cancel,
+                  label: '拒绝',
+                ),
+                SlidableAction(
+                  flex: 3,
+                  onPressed: (_) {
+                    applyFriendsModel.handleApply(
+                        context, item.id, 1, () => controllerMaps[1]!._controller.callRefresh());
+                  },
+                  backgroundColor: Colors.teal,
+                  icon: Icons.check_circle,
+                  label: '同意',
+                ),
+              ],
+            )),
+        Divider()
+      ]),
+    );
   }
 }
