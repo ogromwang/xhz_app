@@ -643,6 +643,10 @@ class SpUtil {
     return _instance;
   }
 
+  String? getAccessToken() {
+    return SpUtil._instance.getString("X-TOKEN");
+  }
+
   SharedPreferences? prefs;
 
   Future<void> init() async {

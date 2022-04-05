@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:demo_app/routes/routes.dart';
 import 'package:demo_app/request/dio.dart';
 
+import 'page/sign/Screens/Welcome/welcome_screen.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,6 +42,14 @@ class _HomeWidgetState extends State<HomeWidget> {
 
   @override
   Widget build(BuildContext context) {
+
+    var token = SpUtil().getAccessToken();
+    print("当前的 x-token: $token");
+    if (token == null || token == "") {
+      print("没有 token, 跳转到登录页面");
+      return WelcomeScreen();
+    }
+
     return Scaffold(
       body: NavigationHomeScreen(),
       // floatingActionButton: const FloatingButton(),

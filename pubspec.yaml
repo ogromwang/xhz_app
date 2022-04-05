@@ -49,6 +49,7 @@ dependencies:
   flutter_slidable: ^1.2.0
   fluttertoast: ^8.0.9
   flutter_spinkit: ^5.1.0
+  flutter_svg: ^0.19.1
 
 dev_dependencies:
   flutter_test:
@@ -77,4 +78,5 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/icons/
 
