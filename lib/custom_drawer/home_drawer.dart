@@ -1,8 +1,10 @@
 import 'package:demo_app/common/app_theme.dart';
+import 'package:demo_app/model/account/profile.dart';
 import 'package:flutter/material.dart';
 
+/// 自定义的侧边栏
 class HomeDrawer extends StatefulWidget {
-  const HomeDrawer({Key? key, this.screenIndex, this.iconAnimationController, this.callBackIndex}) : super(key: key);
+  HomeDrawer({Key? key, this.screenIndex, this.iconAnimationController, this.callBackIndex}) : super(key: key);
 
   final AnimationController? iconAnimationController;
   final DrawerIndex? screenIndex;
@@ -14,8 +16,15 @@ class HomeDrawer extends StatefulWidget {
 
 class _HomeDrawerState extends State<HomeDrawer> {
   List<DrawerList>? drawerList;
+  // 用户信息
+  ProfileModel _profileModel = ProfileModel();
+
   @override
   void initState() {
+    // 异步获取用户信息
+    _profileModel.get(context).then((value) {
+      _profileModel = _profileModel;
+    });
     setDrawerListArray();
     super.initState();
   }
@@ -57,37 +66,10 @@ class _HomeDrawerState extends State<HomeDrawer> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  AnimatedBuilder(
-                    animation: widget.iconAnimationController!,
-                    builder: (BuildContext context, Widget? child) {
-                      return Container(
-                        height: 120,
-                        width: 120,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          // 不要阴影
-                          // boxShadow: <BoxShadow>[
-                          //   BoxShadow(color: AppTheme.grey.withOpacity(0.6), offset: const Offset(2.0, 4.0), blurRadius: 8),
-                          // ],
-                        ),
-                        child: ClipRRect(
-                          borderRadius: const BorderRadius.all(Radius.circular(60.0)),
-                          child: Image.asset('assets/images/test.png', fit: BoxFit.cover),
-                        ),
-                      );
-                    },
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                    child: Text(
-                      '洛洛',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: AppTheme.grey,
-                        fontSize: 18,
-                      ),
-                    ),
-                  ),
+                  // 头像
+                  _profilePicture(),
+                  // 用户名
+                  _username()
                 ],
               ),
             ),
@@ -140,6 +122,50 @@ class _HomeDrawerState extends State<HomeDrawer> {
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  /// 用户头像
+  Widget _profilePicture() {
+    var image = Image.asset("assets/images/nodata.png");
+    if (_profileModel.data.profilePicture != "") {
+      image = Image.network('http://${_profileModel.data.profilePicture}', fit: BoxFit.cover);
+    }
+
+    return AnimatedBuilder(
+      animation: widget.iconAnimationController!,
+      builder: (BuildContext context, Widget? child) {
+        return Container(
+          height: 120,
+          width: 120,
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            // 不要阴影
+            // boxShadow: <BoxShadow>[
+            //   BoxShadow(color: AppTheme.grey.withOpacity(0.6), offset: const Offset(2.0, 4.0), blurRadius: 8),
+            // ],
+          ),
+          child: ClipRRect(
+            borderRadius: const BorderRadius.all(Radius.circular(60.0)),
+            child: image,
+          ),
+        );
+      },
+    );
+  }
+
+  /// 用户名称
+  Widget _username() {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      child: Text(
+        _profileModel.data.username,
+        style: TextStyle(
+          fontWeight: FontWeight.w600,
+          color: AppTheme.grey,
+          fontSize: 18,
+        ),
       ),
     );
   }
