@@ -1,4 +1,4 @@
-import 'package:demo_app/common/toast.dart';
+import 'package:demo_app/common/popup.dart';
 import 'package:demo_app/model/sign/sign.dart';
 import 'package:demo_app/page/sign/Screens/Login/login_screen.dart';
 import 'package:demo_app/page/sign/Screens/Signup/components/or_divider.dart';

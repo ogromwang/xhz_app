@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:demo_app/common/popup.dart';
 import 'package:demo_app/model/account/result/profile.dart';
 import 'package:demo_app/model/common/result/common_model_result.dart';
 import 'package:dio/dio.dart';
@@ -34,11 +35,21 @@ class ProfileModel {
       var data = FormData.fromMap({
         "file": await MultipartFile.fromFile(pickFile.path)
       });
-      var value = await HttpUtils.put("/v1/account/profile/picture", data: data);
-      var result = BoolModelResult.fromJson(value);
-      if (result.code == 200) {
-        return Future.value(result.data);
+      var op = Options(
+        sendTimeout: 60000
+      );
+
+      try {
+        Loading.show(context);
+        var value = await HttpUtils.put("/v1/account/profile/picture", data: data, options: op);
+        var result = BoolModelResult.fromJson(value);
+        if (result.code == 200) {
+          return Future.value(result.data);
+        }
+      } finally {
+        Loading.dismiss(context);
       }
+
     }
 
     return Future.value(false);

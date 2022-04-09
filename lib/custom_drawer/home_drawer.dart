@@ -135,20 +135,6 @@ class _HomeDrawerState extends State<HomeDrawer> {
       image = Image.network('http://${pic}', fit: BoxFit.cover);
     }
 
-    var button = ElevatedButton(
-      onPressed: () {
-        _profileModel.updateProfilePicture(context).then((value) {
-          if (value) {
-            _profileModel.get(context).then((value) {
-              setState(() {
-                _profileModel = _profileModel;
-              });
-            });
-          }
-        });
-      },
-      child: image,
-    );
     return AnimatedBuilder(
       animation: widget.iconAnimationController!,
       builder: (BuildContext context, Widget? child) {
@@ -164,11 +150,25 @@ class _HomeDrawerState extends State<HomeDrawer> {
           ),
           child: ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(60.0)),
-            child: button,
+            child: InkWell(
+              onTap: () {
+                _profileModel.updateProfilePicture(context).then((value) {
+                  if (value) {
+                    _profileModel.get(context).then((value) {
+                      setState(() {
+                        _profileModel = _profileModel;
+                      });
+                    });
+                  }
+                });
+              },
+              child: image,
+            ),
           ),
         );
       },
     );
+
   }
 
   /// 用户名称

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:demo_app/common/app_theme.dart';
+import 'package:demo_app/common/popup.dart';
 import 'package:demo_app/common/widgets.dart';
 import 'package:demo_app/model/account/my_apply_friends_list_model.dart';
 import 'package:demo_app/model/account/my_friends_list_model.dart';
@@ -109,7 +110,7 @@ class _MyFriendsListState extends State<MyFriendsList> {
       padding: const EdgeInsets.only(top: 16),
       child: EasyRefresh.custom(
         firstRefresh: true,
-        firstRefreshWidget: EasyRefreshUtil.firstShow(),
+        firstRefreshWidget: Loading(),
         emptyWidget: EasyRefreshUtil.empty(stateModel.listData.list.length),
         enableControlFinishRefresh: true,
         enableControlFinishLoad: true,

@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:connectivity/connectivity.dart';
-import 'package:demo_app/common/toast.dart';
+import 'package:demo_app/common/popup.dart';
 import 'package:demo_app/model/account/result/account.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -125,7 +125,11 @@ class Http {
 
   Http._internal() {
     // BaseOptions、Options、RequestOptions 都可以配置参数，优先级别依次递增，且可以根据优先级别覆盖参数
-    BaseOptions options = BaseOptions();
+    BaseOptions options = BaseOptions(
+      connectTimeout: 8000,
+      sendTimeout: 8000,
+      receiveTimeout: 8000
+    );
 
     dio = Dio(options);
 
@@ -158,8 +162,8 @@ class Http {
   /// [interceptors] 基础拦截器
   void init({
     String? baseUrl,
-    int connectTimeout = 3000,
-    int receiveTimeout = 3500,
+    int connectTimeout = 6500,
+    int receiveTimeout = 6500,
     Map<String, String>? headers,
     List<Interceptor>? interceptors,
   }) {
