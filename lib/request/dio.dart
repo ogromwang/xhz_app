@@ -12,14 +12,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 class HttpUtils {
   static void init({
     required String baseUrl,
-    int connectTimeout = 1500,
-    int receiveTimeout = 1500,
+    int connectTimeout = 6500,
+    int receiveTimeout = 6500,
+    int sendTimeout = 6500,
     List<Interceptor>? interceptors,
   }) {
     Http().init(
       baseUrl: baseUrl,
       connectTimeout: connectTimeout,
       receiveTimeout: receiveTimeout,
+      sendTimeout: sendTimeout,
       interceptors: interceptors,
     );
   }
@@ -164,11 +166,13 @@ class Http {
     String? baseUrl,
     int connectTimeout = 6500,
     int receiveTimeout = 6500,
+    int sendTimeout = 6500,
     Map<String, String>? headers,
     List<Interceptor>? interceptors,
   }) {
     dio.options = dio.options.merge(
       baseUrl: baseUrl,
+      sendTimeout: sendTimeout,
       connectTimeout: connectTimeout,
       receiveTimeout: receiveTimeout,
       headers: headers ?? {},

@@ -19,6 +19,9 @@ Future<void> init() async {
   // 初始化request类
   HttpUtils.init(
     baseUrl: "http://192.168.0.116/",
+    connectTimeout: 6500,
+    receiveTimeout: 6500,
+    sendTimeout: 6500
   );
   print("全局注入");
 }
