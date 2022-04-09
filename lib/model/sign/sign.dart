@@ -1,4 +1,5 @@
 import 'package:demo_app/common/toast.dart';
+import 'package:demo_app/model/common/result/common_model_result.dart';
 import 'package:demo_app/model/sign/result/sign_model.dart';
 import 'package:flutter/material.dart';
 import 'package:demo_app/request/dio.dart';
@@ -37,7 +38,7 @@ class SignModel {
       "rePassword": rePassword
     };
     var value = await HttpUtils.post("/v1/account/signup", data: data);
-    var result = SignupModelResult.fromJson(value);
+    var result = BoolModelResult.fromJson(value);
     if (result.code == 200 && result.data) {
       ToastUtil.err("注册成功，去登录");
       // 跳转到登录

@@ -50,6 +50,7 @@ dependencies:
   fluttertoast: ^8.0.9
   flutter_spinkit: ^5.1.0
   flutter_svg: ^0.19.1
+  image_picker: ^0.6.7+21
 
 dev_dependencies:
   flutter_test:
