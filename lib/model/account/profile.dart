@@ -4,13 +4,7 @@ import 'package:demo_app/request/dio.dart';
 
 class ProfileModel {
 
-  ProfileData data = ProfileData(
-      id: 0,
-      username: "",
-      password: "",
-      profilePicture: "",
-      createAt: DateTime.now()
-  );
+  ProfileData? data;
 
   /// 获取用户信息
   Future<void> get(BuildContext context) async {

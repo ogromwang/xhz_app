@@ -1,3 +1,4 @@
+import 'package:demo_app/model/sign/sign.dart';
 import 'package:demo_app/page/sign/Screens/Signup/signup_screen.dart';
 import 'package:demo_app/page/sign/components/already_have_an_account_acheck.dart';
 import 'package:demo_app/page/sign/components/rounded_button.dart';
@@ -9,9 +10,13 @@ import 'package:flutter_svg/svg.dart';
 import 'background.dart';
 
 class Body extends StatelessWidget {
-  const Body({
+  Body({
     Key? key,
   }) : super(key: key);
+
+  String _username = "";
+  String _password = "";
+  final SignModel _signModel = SignModel();
 
   @override
   Widget build(BuildContext context) {
@@ -33,14 +38,21 @@ class Body extends StatelessWidget {
             SizedBox(height: size.height * 0.03),
             RoundedInputField(
               hintText: "用户名",
-              onChanged: (value) {},
+              onChanged: (value) {
+                _username = value;
+              },
             ),
             RoundedPasswordField(
-              onChanged: (value) {},
+              hintText: "密码",
+              onChanged: (value) {
+                _password = value;
+              },
             ),
             RoundedButton(
               text: "登录",
-              press: () {},
+              press: () {
+                _signModel.login(context, _username, _password);
+              },
             ),
             SizedBox(height: size.height * 0.03),
             AlreadyHaveAnAccountCheck(

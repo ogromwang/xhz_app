@@ -1,5 +1,6 @@
 import 'package:demo_app/common/app_theme.dart';
 import 'package:demo_app/model/account/profile.dart';
+import 'package:demo_app/request/dio.dart';
 import 'package:flutter/material.dart';
 
 /// 自定义的侧边栏
@@ -129,8 +130,9 @@ class _HomeDrawerState extends State<HomeDrawer> {
   /// 用户头像
   Widget _profilePicture() {
     var image = Image.asset("assets/images/nodata.png");
-    if (_profileModel.data.profilePicture != "") {
-      image = Image.network('http://${_profileModel.data.profilePicture}', fit: BoxFit.cover);
+    var pic = _profileModel.data?.profilePicture??"";
+    if (pic != "") {
+      image = Image.network('http://${pic}', fit: BoxFit.cover);
     }
 
     return AnimatedBuilder(
@@ -160,7 +162,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       child: Text(
-        _profileModel.data.username,
+        _profileModel.data?.username?? "",
         style: TextStyle(
           fontWeight: FontWeight.w600,
           color: AppTheme.grey,
@@ -171,7 +173,11 @@ class _HomeDrawerState extends State<HomeDrawer> {
   }
   
   void onTapped() {
-    print('Doing Something...'); // Print to console.
+    SpUtil().setAccessToken("").then((value) {
+      if (value) {
+        Navigator.of(context).pushNamedAndRemoveUntil("/login", (Route<dynamic> route) => false);
+      }
+    });
   }
 
   // 侧边栏单个

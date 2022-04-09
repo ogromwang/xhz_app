@@ -647,6 +647,10 @@ class SpUtil {
     return SpUtil._instance.getString("X-TOKEN");
   }
 
+  Future<bool> setAccessToken(String token) {
+    return SpUtil._instance.setString("X-TOKEN", token);
+  }
+
   SharedPreferences? prefs;
 
   Future<void> init() async {

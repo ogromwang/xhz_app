@@ -3,6 +3,9 @@ import 'package:demo_app/page/friends/find_friends.dart';
 import 'package:demo_app/page/add/add.dart';
 import 'package:demo_app/page/sign/Screens/Login/login_screen.dart';
 import 'package:demo_app/page/sign/Screens/Signup/signup_screen.dart';
+import 'package:flutter/material.dart';
+
+import 'navigation_home_screen.dart';
 
 class Routes {
 
@@ -12,6 +15,11 @@ class Routes {
     '/find' : (context) => FindFriends(),
     '/login' : (context) => LoginScreen(),
     '/signup' : (context) => SignUpScreen(),
+    '/home' : (context) {
+      return Scaffold(
+        body: NavigationHomeScreen(),
+      );
+    }
   };
 
 }
