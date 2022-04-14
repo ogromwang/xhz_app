@@ -18,17 +18,42 @@ class MyNumberTextInputFormatter extends TextInputFormatter {
 
   ///获取目前的小数位数
   static int getValueDigit(String value) {
+    return getDigit(value).length;
+  }
+
+  ///获取目前的小数位数
+  static String getDigit(String value) {
     if (value.contains(".")) {
-      return value.split(".")[1].length;
+      return value.split(".")[1];
     } else {
-      return -1;
+      return "";
     }
+  }
+
+  static String getNumber(String value) {
+    var val = value;
+    if (value.contains(".")) {
+      val = value.split(".")[0];
+    }
+    return val;
   }
 
   @override
   TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
     String value = newValue.text;
     int selectionIndex = newValue.selection.end;
+
+    var number = getNumber(value);
+    if (number.length > 6) {
+      var digit = getDigit(value);
+      var suffix = "";
+      if (digit.isNotEmpty) {
+        suffix = "." + digit;
+      }
+
+      value = number.substring(0, 6) + suffix;
+      selectionIndex = value.length;
+    }
     if (value == ".") {
       value = "0.";
       selectionIndex++;

@@ -15,8 +15,9 @@ class SliderView extends StatefulWidget {
 }
 
 class _SliderViewState extends State<SliderView> {
-  double distValue = 50.0;
+  double distValue = 0;
   double maxLen = 100;
+  var offset = 0;
 
   @override
   void initState() {
@@ -52,7 +53,7 @@ class _SliderViewState extends State<SliderView> {
             child: Slider(
               onChanged: (double value) {
                 setState(() {
-                  distValue = value;
+                  distValue = double.parse(value.toStringAsFixed(2));
                   if (value == 0) {
                     maxLen = 100;
                   }
@@ -76,6 +77,17 @@ class _SliderViewState extends State<SliderView> {
 
   Widget testInput() {
     var text = TextField(
+      controller: TextEditingController
+          .fromValue(
+          TextEditingValue(
+              text: distValue == 0 ? "" : "$distValue",
+              selection:TextSelection.fromPosition(
+                  TextPosition(
+                    affinity:TextAffinity.downstream,
+                    offset: offset
+                  ))
+          )
+      ),
       // controller: _money,
       keyboardType: TextInputType.number,
       inputFormatters: [
@@ -93,6 +105,17 @@ class _SliderViewState extends State<SliderView> {
         var d = double.parse(val);
         setState(() {
           distValue = d;
+          offset = MyNumberTextInputFormatter.getNumber(distValue.toStringAsFixed(2)).length;
+          var dist = MyNumberTextInputFormatter.getDigit(distValue.toStringAsFixed(2));
+          if (double.parse(dist) != 0) {
+            var parse = int.parse(dist);
+            if (parse % 10 == 0) {
+              offset += 2;
+            } else {
+              offset += 3;
+            }
+          }
+
           if (d > 100) {
             maxLen = distValue;
           }
