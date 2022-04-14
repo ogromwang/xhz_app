@@ -16,6 +16,7 @@ class SliderView extends StatefulWidget {
 
 class _SliderViewState extends State<SliderView> {
   double distValue = 50.0;
+  double maxLen = 100;
 
   @override
   void initState() {
@@ -39,7 +40,7 @@ class _SliderViewState extends State<SliderView> {
                 child: testInput()
               ),
               Expanded(
-                flex: 100 - distValue.round(),
+                flex: maxLen.toInt() - distValue.round(),
                 child: const SizedBox(),
               ),
             ],
@@ -52,13 +53,16 @@ class _SliderViewState extends State<SliderView> {
               onChanged: (double value) {
                 setState(() {
                   distValue = value;
+                  if (value == 0) {
+                    maxLen = 100;
+                  }
                 });
                 try {
                   widget.onChangedistValue!(distValue);
                 } catch (_) {}
               },
               min: 0,
-              max: 100,
+              max: maxLen,
               activeColor: HomeAppTheme.buildLightTheme().primaryColor,
               inactiveColor: Colors.grey.withOpacity(0.4),
               // divisions: 100,
@@ -86,8 +90,12 @@ class _SliderViewState extends State<SliderView> {
       ),
       autofocus: false,
       onChanged: (val) {
+        var d = double.parse(val);
         setState(() {
-          distValue = val as double;
+          distValue = d;
+          if (d > 100) {
+            maxLen = distValue;
+          }
         });
       },
     );
