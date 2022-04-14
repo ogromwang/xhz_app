@@ -1,5 +1,7 @@
+import 'package:demo_app/common/number.dart';
 import 'package:flutter/material.dart';
 import 'package:demo_app/common/app_theme.dart';
+import 'package:flutter/services.dart';
 
 class SliderView extends StatefulWidget {
   const SliderView({Key? key, this.onChangedistValue, this.distValue})
@@ -34,10 +36,7 @@ class _SliderViewState extends State<SliderView> {
               ),
               Container(
                 width: 170,
-                child: Text(
-                  'Less than ${(distValue / 10).toStringAsFixed(1)} Km',
-                  textAlign: TextAlign.center,
-                ),
+                child: testInput()
               ),
               Expanded(
                 flex: 100 - distValue.round(),
@@ -62,7 +61,7 @@ class _SliderViewState extends State<SliderView> {
               max: 100,
               activeColor: HomeAppTheme.buildLightTheme().primaryColor,
               inactiveColor: Colors.grey.withOpacity(0.4),
-              divisions: 100,
+              // divisions: 100,
               value: distValue,
             ),
           ),
@@ -70,6 +69,40 @@ class _SliderViewState extends State<SliderView> {
       ),
     );
   }
+
+  Widget testInput() {
+    var text = TextField(
+      // controller: _money,
+      keyboardType: TextInputType.number,
+      inputFormatters: [
+        FilteringTextInputFormatter(RegExp("[0-9.]"), allow: true),
+        MyNumberTextInputFormatter(digit: 2),
+      ],
+      textAlign: TextAlign.center,
+      decoration: InputDecoration(
+        border: InputBorder.none,
+        hintText: '${(distValue).toStringAsFixed(2)}',
+        hintStyle: TextStyle(color: Color.fromRGBO(119, 119, 119, 1), height: 1),
+      ),
+      autofocus: false,
+      onChanged: (val) {
+        setState(() {
+          distValue = val as double;
+        });
+      },
+    );
+
+    return Stack(
+      children: [
+        Padding(
+          padding: EdgeInsets.only(left: 60),
+          child: Text("本次花销: ", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 10),),
+        ),
+        text,
+      ],
+    );
+  }
+
 }
 
 class CustomThumbShape extends SliderComponentShape {

@@ -204,6 +204,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
     );
   }
 
+  /// filter 首页
   Widget getFilterBarUI() {
     return Stack(
       children: <Widget>[
@@ -231,7 +232,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
                   child: Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(
-                      '530 hotels found',
+                      '',
                       style: TextStyle(
                         fontWeight: FontWeight.w100,
                         fontSize: 16,

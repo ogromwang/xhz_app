@@ -1,4 +1,5 @@
 
+import 'package:demo_app/page/add/push_record.dart';
 import 'package:flutter/material.dart';
 
 // NavigationButton 下方的导航栏
@@ -52,7 +53,13 @@ class FloatingAddButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: () {
-        Navigator.pushNamed(context, '/add');
+        FocusScope.of(context).requestFocus(FocusNode());
+        Navigator.push<dynamic>(
+          context,
+          MaterialPageRoute<dynamic>(builder: (BuildContext context) => PushRecordScreen(), fullscreenDialog: true),
+        );
+
+        // Navigator.pushNamed(context, '/add');
       },
       child: const Icon(Icons.add, color: Colors.white,),
     );
