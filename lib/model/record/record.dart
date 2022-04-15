@@ -52,21 +52,5 @@ class RecordModel {
 
   }
 
-  /// 注册
-  Future signup(BuildContext context, String username, password, rePassword) async {
-    var data = {
-      "username": username,
-      "password": password,
-      "rePassword": rePassword
-    };
-    var value = await HttpUtils.post("/v1/account/signup", data: data);
-    var result = BoolModelResult.fromJson(value);
-    if (result.code == 200 && result.data) {
-      ToastUtil.err("注册成功，去登录");
-      // 跳转到登录
-      Navigator.of(context).pushNamedAndRemoveUntil("/login", (Route<dynamic> route) => false);
-    }
-
-  }
 
 }

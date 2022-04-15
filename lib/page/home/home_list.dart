@@ -1,6 +1,11 @@
 import 'dart:ui';
+import 'package:demo_app/common/popup.dart';
+import 'package:demo_app/common/widgets.dart';
+import 'package:demo_app/model/record/record_all_model.dart';
+import 'package:demo_app/model/record/result/record_result.dart';
 import 'package:demo_app/page/home/model/list_data.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'filters_screen.dart';
@@ -16,16 +21,23 @@ class HotelHomeScreen extends StatefulWidget {
 class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderStateMixin {
   // 动画
   AnimationController? animationController;
+  final EasyRefreshController _controller = EasyRefreshController();
+  final ScrollController _scrollController = ScrollController();
 
   double pageOffset = 0;
   late PageController pageController;
 
-  // 数据list
-  List<HotelListData> hotelList = HotelListData.hotelList;
-  final ScrollController _scrollController = ScrollController();
+  // 控制结束
+  bool _enableControlFinish = false;
+  // 是否开启刷新
+  bool _enableRefresh = true;
+  // 是否开启加载
+  bool _enableLoad = true;
 
-  DateTime startDate = DateTime.now();
-  DateTime endDate = DateTime.now().add(const Duration(days: 5));
+  // 数据list
+  RecordAllModel _recordAllModel = RecordAllModel();
+
+  final ScrollController _scrollController2 = ScrollController();
 
   @override
   void initState() {
@@ -37,11 +49,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
     });
 
     super.initState();
-  }
-
-  Future<bool> getData() async {
-    await Future<dynamic>.delayed(const Duration(milliseconds: 200));
-    return true;
   }
 
   @override
@@ -79,7 +86,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
                     Expanded(
                       // 可嵌套的滚动
                       child: NestedScrollView(
-                        controller: _scrollController,
+                        controller: _scrollController2,
                         // 滑动可以隐藏
                         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
                           return <Widget>[
@@ -105,27 +112,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
                         // 这里是在渲染数据了
                         body: Container(
                           color: HomeAppTheme.buildLightTheme().backgroundColor,
-                          child: MasonryGridView.count(
-                            padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 2),
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 2,
-                            crossAxisSpacing: 2,
-                            itemBuilder: (context, index) {
-                              double height = HotelListData.heightRandom[index % 7];
-                              print("当前index $index, 当前高度：height $height");
-                              return Card(
-                                // Give each item a random background color
-                                color: Color.fromARGB(
-                                    math.Random().nextInt(256), math.Random().nextInt(256), math.Random().nextInt(256), math.Random().nextInt(256)),
-                                child: SizedBox(
-                                  height: height,
-                                  child: const Center(
-                                    child: Text("title"),
-                                  ),
-                                ),
-                              );
-                            },
-                          )),
+                          child: _list(context),
+                        )
                       ),
                     )
                   ],
@@ -133,6 +121,87 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  /// 我的好友
+  Widget _list(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 1),
+      child: EasyRefresh.custom(
+        firstRefresh: true,
+        firstRefreshWidget: Loading(),
+        emptyWidget: EasyRefreshUtil.empty(_recordAllModel.data.list.length),
+        enableControlFinishRefresh: true,
+        enableControlFinishLoad: true,
+        taskIndependence: false,
+        controller: _controller,
+        scrollController: _scrollController,
+        reverse: false,
+        scrollDirection: Axis.vertical,
+        topBouncing: true,
+        bottomBouncing: true,
+        header: BallPulseHeader(),
+        footer: BallPulseFooter(),
+        onRefresh: _enableRefresh
+            ? () async {
+                _recordAllModel.refreshData(context).then((value) {
+                  if (mounted) {
+                    setState(() {
+                      _recordAllModel = _recordAllModel;
+                    });
+                    if (!_enableControlFinish) {
+                      _controller.resetLoadState();
+                      _controller.finishRefresh();
+                    }
+                  }
+                });
+              }
+            : null,
+        onLoad: _enableLoad
+            ? () async {
+                _recordAllModel.loadMoreData(context).then((value) {
+                  if (mounted) {
+                    setState(() {
+                      _recordAllModel = _recordAllModel;
+                    });
+                    if (!_enableControlFinish) {
+                      _controller.finishLoad(noMore: !_recordAllModel.data.more);
+                    }
+                  }
+                });
+              }
+            : null,
+        slivers: <Widget>[
+          Container(
+            color: HomeAppTheme.buildLightTheme().backgroundColor,
+            child: MasonryGridView.count(
+              padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 2),
+              crossAxisCount: 2,
+              mainAxisSpacing: 2,
+              crossAxisSpacing: 2,
+              itemBuilder: (context, index) {
+                var item = _recordAllModel.data.list[index];
+                return _getItem(context, index, item);
+              },
+            )
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _getItem(BuildContext context, int index, Item item) {
+    double height = HotelListData.heightRandom[index % 7];
+    return Card(
+      // Give each item a random background color
+      color: Color.fromARGB(math.Random().nextInt(256), math.Random().nextInt(256), math.Random().nextInt(256), math.Random().nextInt(256)),
+      child: SizedBox(
+        height: height,
+        child: Center(
+          child: Text(item.describe),
         ),
       ),
     );
@@ -330,7 +399,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
 
             // 站位的作用
             const Spacer()
-
           ],
         ),
       ),
