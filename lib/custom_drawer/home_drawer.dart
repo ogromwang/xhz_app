@@ -17,6 +17,7 @@ class HomeDrawer extends StatefulWidget {
 
 class _HomeDrawerState extends State<HomeDrawer> {
   List<DrawerList>? drawerList;
+
   // 用户信息
   ProfileModel _profileModel = ProfileModel();
 
@@ -130,7 +131,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
   /// 用户头像
   Widget _profilePicture() {
     var image = Image.asset("assets/images/nodata.png");
-    var pic = _profileModel.data?.profilePicture??"";
+    var pic = _profileModel.data?.profilePicture ?? "";
     if (pic != "") {
       image = Image.network('http://${pic}', fit: BoxFit.cover);
     }
@@ -139,36 +140,27 @@ class _HomeDrawerState extends State<HomeDrawer> {
       animation: widget.iconAnimationController!,
       builder: (BuildContext context, Widget? child) {
         return Container(
-          height: 120,
-          width: 120,
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            // 不要阴影
-            // boxShadow: <BoxShadow>[
-            //   BoxShadow(color: AppTheme.grey.withOpacity(0.6), offset: const Offset(2.0, 4.0), blurRadius: 8),
-            // ],
-          ),
-          child: ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(60.0)),
-            child: InkWell(
-              onTap: () {
-                _profileModel.updateProfilePicture(context).then((value) {
-                  if (value) {
-                    _profileModel.get(context).then((value) {
-                      setState(() {
-                        _profileModel = _profileModel;
-                      });
-                    });
-                  }
-                });
-              },
-              child: image,
+            height: 120,
+            width: 120,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
             ),
-          ),
+            child: GestureDetector(
+                onTap: () {
+                  _profileModel.updateProfilePicture(context).then((value) {
+                    if (value) {
+                      _profileModel.get(context).then((value) {
+                        setState(() {
+                          _profileModel = _profileModel;
+                        });
+                      });
+                    }
+                  });
+                },
+                child: ClipRRect(borderRadius: const BorderRadius.all(Radius.circular(60.0)), child: image))
         );
       },
     );
-
   }
 
   /// 用户名称
@@ -176,7 +168,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       child: Text(
-        _profileModel.data?.username?? "",
+        _profileModel.data?.username ?? "",
         style: TextStyle(
           fontWeight: FontWeight.w600,
           color: AppTheme.grey,
@@ -185,7 +177,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
       ),
     );
   }
-  
+
   void onTapped() {
     SpUtil().setAccessToken("").then((value) {
       if (value) {
@@ -232,7 +224,8 @@ class _HomeDrawerState extends State<HomeDrawer> {
                       ? Container(
                           width: 24,
                           height: 24,
-                          child: Image.asset(listData.imageName, color: widget.screenIndex == listData.index ? Colors.blue : AppTheme.nearlyBlack),
+                          child: Image.asset(listData.imageName,
+                              color: widget.screenIndex == listData.index ? Colors.blue : AppTheme.nearlyBlack),
                         )
                       : Icon(listData.icon?.icon, color: widget.screenIndex == listData.index ? Colors.blue : AppTheme.nearlyBlack),
                   const Padding(
@@ -256,7 +249,9 @@ class _HomeDrawerState extends State<HomeDrawer> {
                     builder: (BuildContext context, Widget? child) {
                       return Transform(
                         transform: Matrix4.translationValues(
-                            (MediaQuery.of(context).size.width * 0.75 - 64) * (1.0 - widget.iconAnimationController!.value - 1.0), 0.0, 0.0),
+                            (MediaQuery.of(context).size.width * 0.75 - 64) * (1.0 - widget.iconAnimationController!.value - 1.0),
+                            0.0,
+                            0.0),
                         child: Padding(
                           padding: EdgeInsets.only(top: 8, bottom: 8),
                           child: Container(
