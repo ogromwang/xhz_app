@@ -72,7 +72,7 @@ class _MyFriendsListState extends State<MyFriendsList> {
                 width: 60,
                 child: ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(40.0)),
-                  child: Image.network('http://${item.profilePicture}', fit: BoxFit.cover),
+                  child: Image.network('${item.profilePicture}', fit: BoxFit.cover),
                 ),
               ),
             ),
@@ -306,7 +306,7 @@ class _MyFriendsListState extends State<MyFriendsList> {
                     width: 60,
                     child: ClipRRect(
                       borderRadius: const BorderRadius.all(Radius.circular(40.0)),
-                      child: Image.network('http://${item.profilePicture}', fit: BoxFit.cover),
+                      child: Image.network('${item.profilePicture}', fit: BoxFit.cover),
                     ),
                   ),
                 ),

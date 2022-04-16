@@ -89,7 +89,7 @@ class _FindFriendsState extends State<FindFriends> {
                     width: 60,
                     child: ClipRRect(
                       borderRadius: const BorderRadius.all(Radius.circular(40.0)),
-                      child: Image.network('http://${item.profilePicture}', fit: BoxFit.cover),
+                      child: Image.network('${item.profilePicture}', fit: BoxFit.cover),
                     ),
                   ),
                 ),

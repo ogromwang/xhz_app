@@ -6,6 +6,7 @@ import 'package:demo_app/model/record/result/record_result.dart';
 import 'package:demo_app/page/home/model/list_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'filters_screen.dart';
@@ -30,7 +31,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
   // 控制结束
   bool _enableControlFinish = false;
   // 是否开启刷新
-  bool _enableRefresh = true;
+  bool _enableRefresh = false;
   // 是否开启加载
   bool _enableLoad = true;
 
@@ -48,6 +49,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
       setState(() => pageOffset = pageController.page!);
     });
 
+    searchList();
+
     super.initState();
   }
 
@@ -60,6 +63,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.getInstance().init(context);
     return Theme(
       data: HomeAppTheme.buildLightTheme(),
       child: Container(
@@ -99,21 +103,11 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
                                 );
                               }, childCount: 1),
                             ),
-                            SliverPersistentHeader(
-                              pinned: true,
-                              floating: true,
-                              delegate: ContestTabHeader(
-                                getFilterBarUI(),
-                              ),
-                            ),
                           ];
                         },
 
                         // 这里是在渲染数据了
-                        body: Container(
-                          color: HomeAppTheme.buildLightTheme().backgroundColor,
-                          child: _list(context),
-                        )
+                        body: _list(context)
                       ),
                     )
                   ],
@@ -126,24 +120,37 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
     );
   }
 
+  /// 获取 list
+  void searchList() {
+    _recordAllModel.refreshData(context).then((value) {
+      if (mounted) {
+        setState(() {
+          _recordAllModel = _recordAllModel;
+        });
+        if (!_enableControlFinish) {
+          _controller.resetLoadState();
+          _controller.finishRefresh();
+        }
+      }
+    });
+  }
+
   /// 我的好友
   Widget _list(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 1),
-      child: EasyRefresh.custom(
+      child: EasyRefresh(
         firstRefresh: true,
-        firstRefreshWidget: Loading(),
+        // firstRefreshWidget: Loading(),
         emptyWidget: EasyRefreshUtil.empty(_recordAllModel.data.list.length),
         enableControlFinishRefresh: true,
         enableControlFinishLoad: true,
         taskIndependence: false,
         controller: _controller,
         scrollController: _scrollController,
-        reverse: false,
-        scrollDirection: Axis.vertical,
-        topBouncing: true,
-        bottomBouncing: true,
-        header: BallPulseHeader(),
+        topBouncing: false,
+        bottomBouncing: false,
+        // header: BallPulseHeader(),
         footer: BallPulseFooter(),
         onRefresh: _enableRefresh
             ? () async {
@@ -174,27 +181,28 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
                 });
               }
             : null,
-        slivers: <Widget>[
-          Container(
-            color: HomeAppTheme.buildLightTheme().backgroundColor,
-            child: MasonryGridView.count(
-              padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 2),
-              crossAxisCount: 2,
-              mainAxisSpacing: 2,
-              crossAxisSpacing: 2,
-              itemBuilder: (context, index) {
-                var item = _recordAllModel.data.list[index];
-                return _getItem(context, index, item);
-              },
-            )
-          ),
-        ],
+        child: MasonryGridView.count(
+          itemCount: _recordAllModel.data.list.length,
+          padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 2),
+          crossAxisCount: 2,
+          mainAxisSpacing: 2,
+          crossAxisSpacing: 2,
+          itemBuilder: (context, index) {
+            var item = _recordAllModel.data.list[index];
+            return _getItem(context, index, item);
+          },
+        ),
       ),
     );
   }
 
   Widget _getItem(BuildContext context, int index, Item item) {
-    double height = HotelListData.heightRandom[index % 7];
+    double height = ScreenUtil.getInstance().setSp(800);// HotelListData.heightRandom[index % 7];
+    // double height = HotelListData.heightRandom[index % 7];
+    if (index == 0 || (index == _recordAllModel.data.list.length-1 && index %2 != 0)) {
+      height = ScreenUtil.getInstance().setSp(660);
+    }
+
     return Card(
       // Give each item a random background color
       color: Color.fromARGB(math.Random().nextInt(256), math.Random().nextInt(256), math.Random().nextInt(256), math.Random().nextInt(256)),

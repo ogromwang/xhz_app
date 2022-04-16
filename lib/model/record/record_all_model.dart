@@ -19,9 +19,9 @@ class RecordAllModel {
       "pageSize" : pageSize
     };
     var value = await HttpUtils.get("v1/record/all", params: params);
-    print("得到的value为:$value");
+
     // 请求成功
-    var result = recordResultFromJson(value);
+    var result = RecordResult.fromJson(value);
     if (result.code == 200) {
       _result.data.list.addAll(result.data.list);
       _result.data.more = result.data.more;

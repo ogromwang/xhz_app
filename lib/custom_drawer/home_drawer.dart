@@ -133,7 +133,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
     var image = Image.asset("assets/images/nodata.png");
     var pic = _profileModel.data?.profilePicture ?? "";
     if (pic != "") {
-      image = Image.network('http://${pic}', fit: BoxFit.cover);
+      image = Image.network('${pic}', fit: BoxFit.cover);
     }
 
     return AnimatedBuilder(
