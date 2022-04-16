@@ -17,7 +17,6 @@ class HotelListData {
   int reviews;
   int perNight;
 
-  static List<double> heightRandom = [260, 230, 185, 240, 220, 270, 300];
 
   static List<HotelListData> hotelList = <HotelListData>[
     HotelListData(

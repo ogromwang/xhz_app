@@ -3,7 +3,6 @@ import 'package:demo_app/common/popup.dart';
 import 'package:demo_app/common/widgets.dart';
 import 'package:demo_app/model/record/record_all_model.dart';
 import 'package:demo_app/model/record/result/record_result.dart';
-import 'package:demo_app/page/home/model/list_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,8 +29,10 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
 
   // 控制结束
   bool _enableControlFinish = false;
+
   // 是否开启刷新
   bool _enableRefresh = false;
+
   // 是否开启加载
   bool _enableLoad = true;
 
@@ -90,25 +91,24 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
                     Expanded(
                       // 可嵌套的滚动
                       child: NestedScrollView(
-                        controller: _scrollController2,
-                        // 滑动可以隐藏
-                        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-                          return <Widget>[
-                            SliverList(
-                              delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
-                                return Column(
-                                  children: <Widget>[
-                                    getSearchBarUI(),
-                                  ],
-                                );
-                              }, childCount: 1),
-                            ),
-                          ];
-                        },
+                          controller: _scrollController2,
+                          // 滑动可以隐藏
+                          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+                            return <Widget>[
+                              SliverList(
+                                delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
+                                  return Column(
+                                    children: <Widget>[
+                                      getSearchBarUI(),
+                                    ],
+                                  );
+                                }, childCount: 1),
+                              ),
+                            ];
+                          },
 
-                        // 这里是在渲染数据了
-                        body: _list(context)
-                      ),
+                          // 这里是在渲染数据了
+                          body: _list(context)),
                     )
                   ],
                 ),
@@ -197,20 +197,55 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
   }
 
   Widget _getItem(BuildContext context, int index, Item item) {
-    double height = ScreenUtil.getInstance().setSp(800);// HotelListData.heightRandom[index % 7];
+    double height = ScreenUtil.getInstance().setSp(800); // HotelListData.heightRandom[index % 7];
     // double height = HotelListData.heightRandom[index % 7];
-    if (index == 0 || (index == _recordAllModel.data.list.length-1 && index %2 != 0)) {
+    if (index == 0 || (index == _recordAllModel.data.list.length - 1 && index % 2 != 0)) {
       height = ScreenUtil.getInstance().setSp(660);
+    }
+
+    var image = Image.asset("assets/images/nodata.png");
+    if (item.image.isNotEmpty) {
+      image = Image.network(item.image, fit: BoxFit.cover);
+    }
+
+    var profile = Image.asset("assets/images/nodata.png");
+    if (item.profilePicture.isNotEmpty) {
+      profile = Image.network(item.profilePicture, fit: BoxFit.cover);
     }
 
     return Card(
       // Give each item a random background color
-      color: Color.fromARGB(math.Random().nextInt(256), math.Random().nextInt(256), math.Random().nextInt(256), math.Random().nextInt(256)),
-      child: SizedBox(
+      color: Color.fromARGB(math.Random().nextInt(256), math.Random().nextInt(256), math.Random().nextInt(256),
+          math.Random().nextInt(256)),
+      child: Container(
         height: height,
-        child: Center(
-          child: Text(item.describe),
-        ),
+        child: Stack(
+          children: [
+            Container(
+              height: height,
+              child: image,
+            ),
+            Positioned(
+              top: ScreenUtil.getInstance().setSp(10),
+              left: ScreenUtil.getInstance().setSp(10),
+              child: Container(
+                height: height * 0.8,
+                width: ScreenUtil.getInstance().setWidth(200),
+                child: Text(item.describe, style: TextStyle(color: Colors.white ,fontSize: ScreenUtil.getInstance().setSp(80), fontWeight: FontWeight.w200)),
+              ),
+            ),
+            Positioned(
+              bottom: ScreenUtil.getInstance().setSp(30),
+              left: ScreenUtil.getInstance().setSp(30),
+              child: Container(
+                height: ScreenUtil.getInstance().setSp(120),
+                width: ScreenUtil.getInstance().setSp(120),
+                child: ClipRRect(borderRadius: const BorderRadius.all(Radius.circular(60.0)), child: profile),
+              ),
+            )
+
+          ],
+        )
       ),
     );
   }
@@ -331,7 +366,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
                       FocusScope.of(context).requestFocus(FocusNode());
                       Navigator.push<dynamic>(
                         context,
-                        MaterialPageRoute<dynamic>(builder: (BuildContext context) => FiltersScreen(), fullscreenDialog: true),
+                        MaterialPageRoute<dynamic>(
+                            builder: (BuildContext context) => FiltersScreen(), fullscreenDialog: true),
                       );
                     },
                     child: Padding(
