@@ -252,7 +252,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
                       child: Text(
                           item.username,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(color: Colors.black ,fontSize: ScreenUtil.getInstance().setSp(35), fontWeight: FontWeight.w400)
+                          style: TextStyle(color: AppTheme.fontColor ,fontSize: ScreenUtil.getInstance().setSp(35), fontWeight: FontWeight.w400)
                       ),
                     )
                   ),
@@ -265,7 +265,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
                             child: Text(
                                 "-￥"+item.money.toStringAsFixed(2),
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(color: Colors.redAccent ,fontSize: ScreenUtil.getInstance().setSp(40), fontWeight: FontWeight.w400)),
+                                style: TextStyle(color: AppTheme.redColor ,fontSize: ScreenUtil.getInstance().setSp(40), fontWeight: FontWeight.w400)),
                           )
                       )
                   )
@@ -353,11 +353,11 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
       padding: EdgeInsets.only(left: ScreenUtil.getInstance().setWidth(28)),
       child: Row(
         children: [
-          box(Colors.green, Center(
+          box(AppTheme.secondaryColor, Center(
               child: Expanded(
                 child: Padding(
                   padding: EdgeInsets.all(3),
-                  child: Text("当月目标", style: TextStyle(fontSize: 12, color: Colors.green)),
+                  child: Text("当月目标", style: TextStyle(fontSize: 12, color: AppTheme.secondaryColor)),
                 ),
               )
           )),

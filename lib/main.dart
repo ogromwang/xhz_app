@@ -32,7 +32,12 @@ class BootApplication extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: "xhz", debugShowCheckedModeBanner: false, routes: Routes.data, home: HomeWidget());
+    return MaterialApp(
+      title: "xhz",
+      debugShowCheckedModeBanner: false,
+      routes: Routes.data,
+      home: HomeWidget()
+    );
   }
 }
 

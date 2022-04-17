@@ -3,8 +3,14 @@ import 'package:flutter/material.dart';
 class AppTheme {
   AppTheme._();
 
-  static const kPrimaryColor = Color(0xFF6F35A5);
-  static const kPrimaryLightColor = Color(0xFFF1E6FF);
+  static Color primaryColor = HexColor('#ff9f1c');
+  static Color secondaryColor = HexColor('#2ec4b6');
+  static Color fontColor = HexColor('#011627');
+  static Color redColor = HexColor('#e71d36');
+  static Color whiteColor = HexColor('#fdfffc');
+
+  static const kPrimaryColor = Color(0xFFFF9F1C);
+  static const kPrimaryLightColor = Color(0xFFF6EDE4);
 
   static const Color notWhite = Color(0xFFEDF0F2);
   static const Color nearlyWhite = Color(0xFFFEFEFE);
@@ -124,9 +130,15 @@ class HomeAppTheme {
     );
   }
 
+  // 使用小花猪颜色
   static ThemeData buildLightTheme() {
-    final Color primaryColor = HexColor('#54D3C2');
-    final Color secondaryColor = HexColor('#54D3C2');
+    // final Color primaryColor = HexColor('#54D3C2');
+    final Color primaryColor = HexColor('#ff9f1c');
+    final Color secondaryColor = HexColor('#2ec4b6');
+    final Color fontColor = HexColor('#011627');
+    final Color redColor = HexColor('#e71d36');
+    final Color whiteColor = HexColor('#fdfffc');
+
     final ColorScheme colorScheme = const ColorScheme.light().copyWith(
       primary: primaryColor,
       secondary: secondaryColor,
@@ -141,7 +153,7 @@ class HomeAppTheme {
       splashFactory: InkRipple.splashFactory,
       accentColor: secondaryColor,
       canvasColor: Colors.white,
-      backgroundColor: const Color(0xFFFFFFFF),
+      backgroundColor: HexColor("#ffffff"),
       scaffoldBackgroundColor: const Color(0xFFF6F6F6),
       errorColor: const Color(0xFFB00020),
       buttonTheme: ButtonThemeData(

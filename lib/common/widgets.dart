@@ -62,7 +62,7 @@ Widget getSearchBarUI(OnChanged onChanged, OnTap onTap) {
         ),
         Container(
           decoration: BoxDecoration(
-            color: HomeAppTheme.buildLightTheme().primaryColor,
+            color: HexColor('#2ec4b6'),
             borderRadius: const BorderRadius.all(
               Radius.circular(38.0),
             ),

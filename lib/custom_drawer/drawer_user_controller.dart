@@ -1,6 +1,7 @@
 import 'package:demo_app/common//app_theme.dart';
 import 'package:demo_app/custom_drawer/home_drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DrawerUserController extends StatefulWidget {
   const DrawerUserController({
@@ -79,6 +80,8 @@ class _DrawerUserControllerState extends State<DrawerUserController> with Ticker
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.getInstance().init(context);
+
     return Scaffold(
       backgroundColor: AppTheme.white,
       body: SingleChildScrollView(
