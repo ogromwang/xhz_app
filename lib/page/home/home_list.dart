@@ -208,7 +208,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
     var profile = ImageWidget(url: item.profilePicture);
 
     // Color.fromARGB(math.Random().nextInt(256), math.Random().nextInt(256), math.Random().nextInt(256),
-    var cir = Radius.circular(ScreenUtil.getInstance().setSp(20));
+    var cir = Radius.circular(ScreenUtil.getInstance().setSp(25));
 
     return Card(
       // Give each item a random background color
@@ -262,7 +262,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
                           child: Padding(
                             padding: EdgeInsets.only(right: ScreenUtil.getInstance().setSp(10), top: ScreenUtil.getInstance().setSp(5)),
                             child: Text(
-                                "￥"+item.money.toStringAsFixed(2),
+                                "-￥"+item.money.toStringAsFixed(2),
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(color: Colors.redAccent ,fontSize: ScreenUtil.getInstance().setSp(40), fontWeight: FontWeight.w400)),
                           )
