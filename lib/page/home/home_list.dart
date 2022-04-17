@@ -203,44 +203,79 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
       height = ScreenUtil.getInstance().setSp(660);
     }
 
-    var image = Image.asset("assets/images/nodata.png");
-    if (item.image.isNotEmpty) {
-      image = Image.network(item.image, fit: BoxFit.cover);
-    }
+    var image = ImageWidget(url: item.image);
 
-    var profile = Image.asset("assets/images/nodata.png");
-    if (item.profilePicture.isNotEmpty) {
-      profile = Image.network(item.profilePicture, fit: BoxFit.cover);
-    }
+    var profile = ImageWidget(url: item.profilePicture);
 
+    // Color.fromARGB(math.Random().nextInt(256), math.Random().nextInt(256), math.Random().nextInt(256),
     return Card(
       // Give each item a random background color
-      color: Color.fromARGB(math.Random().nextInt(256), math.Random().nextInt(256), math.Random().nextInt(256),
-          math.Random().nextInt(256)),
+      color: Colors.white,
       child: Container(
         height: height,
-        child: Stack(
+        child: Column(
           children: [
-            Container(
-              height: height,
-              child: image,
-            ),
-            Positioned(
-              top: ScreenUtil.getInstance().setSp(10),
-              left: ScreenUtil.getInstance().setSp(10),
+            Expanded(
+              flex: 4,
               child: Container(
-                height: height * 0.8,
-                width: ScreenUtil.getInstance().setWidth(200),
-                child: Text(item.describe, style: TextStyle(color: Colors.white ,fontSize: ScreenUtil.getInstance().setSp(80), fontWeight: FontWeight.w200)),
+                child: image,
               ),
             ),
-            Positioned(
-              bottom: ScreenUtil.getInstance().setSp(30),
-              left: ScreenUtil.getInstance().setSp(30),
+
+            Expanded(
+              child: Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: ScreenUtil.getInstance().setWidth(5)),
+                    child: Container(
+                      height: ScreenUtil.getInstance().setSp(80),
+                      width: ScreenUtil.getInstance().setSp(80),
+                      child: ClipRRect(borderRadius: const BorderRadius.all(Radius.circular(60.0)), child: profile),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: ScreenUtil.getInstance().setWidth(20), top: ScreenUtil.getInstance().setSp(5)),
+                    child: Container(
+                      width: ScreenUtil.getInstance().setWidth(200),
+                      child: Text(
+                          item.username,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(color: Colors.black ,fontSize: ScreenUtil.getInstance().setSp(35), fontWeight: FontWeight.w400)
+                      ),
+                    )
+                  ),
+                  Expanded(
+                      child: Container(
+                          alignment: Alignment.centerRight,
+                          child: Padding(
+                            padding: EdgeInsets.only(right: ScreenUtil.getInstance().setSp(10), top: ScreenUtil.getInstance().setSp(5)),
+                            child: Text(
+                                "￥"+item.money.toStringAsFixed(2),
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(color: Colors.redAccent ,fontSize: ScreenUtil.getInstance().setSp(40), fontWeight: FontWeight.w400)),
+                          )
+                      )
+                  )
+                ],
+              ),
+            ),
+
+            Expanded(
               child: Container(
-                height: ScreenUtil.getInstance().setSp(120),
-                width: ScreenUtil.getInstance().setSp(120),
-                child: ClipRRect(borderRadius: const BorderRadius.all(Radius.circular(60.0)), child: profile),
+                  decoration: BoxDecoration(
+                    // border: Border.all(color: Color(0xFFFF0000), width: 0.5),
+                  ),
+                  // height: height * 0.15,
+                  width: double.infinity,
+                  child: Padding(
+                    padding: EdgeInsets.all(ScreenUtil.getInstance().setSp(12)),
+                    child: Text(
+                        "\t\t" + item.describe,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(color: Colors.grey,fontSize: ScreenUtil.getInstance().setSp(30), fontWeight: FontWeight.normal)
+                    ),
+                  )
               ),
             )
 
