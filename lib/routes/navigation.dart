@@ -47,7 +47,9 @@ class _NavigationBarState extends State<NavigationButton> {
 
 // FloatingButton 浮动添加按钮
 class FloatingAddButton extends StatelessWidget {
-  const FloatingAddButton({Key? key}) : super(key: key);
+  Function func;
+
+  FloatingAddButton(this.func, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +59,9 @@ class FloatingAddButton extends StatelessWidget {
         Navigator.push<dynamic>(
           context,
           MaterialPageRoute<dynamic>(builder: (BuildContext context) => PushRecordScreen(), fullscreenDialog: true),
-        );
+        ).then((value) {
+          func();
+        });
 
         // Navigator.pushNamed(context, '/add');
       },

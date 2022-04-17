@@ -43,7 +43,7 @@ class RecordModel {
       var result = BoolModelResult.fromJson(value);
       if (result.code == 200 && result.data) {
         // 刷新
-        Navigator.pop(context);
+        Navigator.pop(context, true);
       }
 
     } finally {

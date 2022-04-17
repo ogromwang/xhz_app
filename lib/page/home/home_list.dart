@@ -70,7 +70,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
       data: HomeAppTheme.buildLightTheme(),
       child: Container(
         child: Scaffold(
-          floatingActionButton: const FloatingAddButton(),
+          floatingActionButton: FloatingAddButton(() {
+            searchList();
+          }),
           // stack 堆叠
           body: Stack(
             children: <Widget>[
@@ -156,17 +158,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
         footer: BallPulseFooter(),
         onRefresh: _enableRefresh
             ? () async {
-                _recordAllModel.refreshData(context).then((value) {
-                  if (mounted) {
-                    setState(() {
-                      _recordAllModel = _recordAllModel;
-                    });
-                    if (!_enableControlFinish) {
-                      _controller.resetLoadState();
-                      _controller.finishRefresh();
-                    }
-                  }
-                });
+                searchList();
               }
             : null,
         onLoad: _enableLoad
