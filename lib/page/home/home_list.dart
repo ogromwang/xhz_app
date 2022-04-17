@@ -26,6 +26,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
 
   double pageOffset = 0;
   late PageController pageController;
+  var cir = Radius.circular(ScreenUtil.getInstance().setSp(25));
 
   // 控制结束
   bool _enableControlFinish = false;
@@ -99,7 +100,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
                                 delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
                                   return Column(
                                     children: <Widget>[
-                                      getSearchBarUI(),
+                                      getUserPlan(),
+                                      // getSearchBarUI(),
                                     ],
                                   );
                                 }, childCount: 1),
@@ -208,7 +210,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
     var profile = ImageWidget(url: item.profilePicture);
 
     // Color.fromARGB(math.Random().nextInt(256), math.Random().nextInt(256), math.Random().nextInt(256),
-    var cir = Radius.circular(ScreenUtil.getInstance().setSp(25));
 
     return Card(
       // Give each item a random background color
@@ -294,6 +295,80 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
 
           ],
         )
+      ),
+    );
+  }
+
+  Widget box(Color boxColor, Widget child) {
+    return Container(
+        height: ScreenUtil.getInstance().setHeight(60),
+        //width: ScreenUtil.getInstance().setWidth(80),
+        decoration: BoxDecoration(
+          border: Border.all(color: boxColor, width: 1),
+          // color: boxColor,
+          borderRadius: BorderRadius.all(
+            Radius.circular(ScreenUtil.getInstance().setSp(15))
+          )
+        ),
+        child: child
+    );
+  }
+
+  Widget getUserPlan() {
+    double leftRight = ScreenUtil.getInstance().setSp(16);
+    double bottom = ScreenUtil.getInstance().setSp(16);
+
+    return Padding(
+      padding: EdgeInsets.only(left: leftRight, right: leftRight, top: bottom, bottom: bottom),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 2,
+            child: Padding(
+              padding: EdgeInsets.only(right: ScreenUtil.getInstance().setWidth(20)),
+              child: Container(
+                  height: ScreenUtil.getInstance().setHeight(140),
+                  decoration: BoxDecoration(
+                    color: HomeAppTheme.buildLightTheme().backgroundColor,
+                    borderRadius: BorderRadius.all(
+                        cir
+                    ),
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(color: Colors.grey.withOpacity(0.2), offset: const Offset(0, 2), blurRadius: 8.0),
+                    ],
+                  ),
+                  child: moneyIcon(),
+              ),
+            )
+          ),
+
+
+        ],
+      ),
+    );
+  }
+
+  Widget moneyIcon() {
+    return Padding(
+      padding: EdgeInsets.only(left: ScreenUtil.getInstance().setWidth(28)),
+      child: Row(
+        children: [
+          box(Colors.green, Center(
+              child: Expanded(
+                child: Padding(
+                  padding: EdgeInsets.all(3),
+                  child: Text("当月目标", style: TextStyle(fontSize: 12, color: Colors.green)),
+                ),
+              )
+          )),
+          Spacer(
+            flex: 2,
+          ),
+          Expanded(
+            flex: 2,
+            child: Text("200 / 2000")
+          )
+        ],
       ),
     );
   }
