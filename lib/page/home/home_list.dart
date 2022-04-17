@@ -31,7 +31,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
   bool _enableControlFinish = false;
 
   // 是否开启刷新
-  bool _enableRefresh = false;
+  bool _enableRefresh = true;
 
   // 是否开启加载
   bool _enableLoad = true;
@@ -150,7 +150,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
         scrollController: _scrollController,
         topBouncing: false,
         bottomBouncing: false,
-        // header: BallPulseHeader(),
+        header: BallPulseHeader(),
         footer: BallPulseFooter(),
         onRefresh: _enableRefresh
             ? () async {
