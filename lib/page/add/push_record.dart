@@ -264,7 +264,7 @@ class _PushRecordScreenState extends State<PushRecordScreen> {
     required String hintText,
     TextInputType keyboardType = TextInputType.multiline,
     TextInputAction textInputAction = TextInputAction.next,
-    int length = 32,
+    int length = 100,
   }) {
     double? fontSize = 15;
     return Container(

@@ -208,6 +208,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
     var profile = ImageWidget(url: item.profilePicture);
 
     // Color.fromARGB(math.Random().nextInt(256), math.Random().nextInt(256), math.Random().nextInt(256),
+    var cir = Radius.circular(ScreenUtil.getInstance().setSp(20));
+
     return Card(
       // Give each item a random background color
       color: Colors.white,
@@ -215,24 +217,33 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
         height: height,
         child: Column(
           children: [
+            // 图片
             Expanded(
               flex: 4,
               child: Container(
-                child: image,
+                decoration: BoxDecoration(
+                  // border: Border.all(color: Color(0xFFFF0000), width: 0.5),
+                  borderRadius: BorderRadius.only(topLeft: cir, topRight: cir),
+                ),
+                width: double.infinity,
+                child: ClipRRect(borderRadius: BorderRadius.only(topLeft: cir, topRight: cir),child: image),
               ),
             ),
 
+            // 头像 - 名字 - 钱
             Expanded(
               child: Row(
                 children: [
+                  // 头像
                   Padding(
-                    padding: EdgeInsets.only(left: ScreenUtil.getInstance().setWidth(5)),
+                    padding: EdgeInsets.only(left: ScreenUtil.getInstance().setWidth(10)),
                     child: Container(
-                      height: ScreenUtil.getInstance().setSp(80),
-                      width: ScreenUtil.getInstance().setSp(80),
+                      height: ScreenUtil.getInstance().setSp(70),
+                      width: ScreenUtil.getInstance().setSp(70),
                       child: ClipRRect(borderRadius: const BorderRadius.all(Radius.circular(60.0)), child: profile),
                     ),
                   ),
+                  // 名字
                   Padding(
                     padding: EdgeInsets.only(left: ScreenUtil.getInstance().setWidth(20), top: ScreenUtil.getInstance().setSp(5)),
                     child: Container(
@@ -244,6 +255,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
                       ),
                     )
                   ),
+                  // 钱
                   Expanded(
                       child: Container(
                           alignment: Alignment.centerRight,
@@ -260,6 +272,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
               ),
             ),
 
+            // 描述
             Expanded(
               child: Container(
                   decoration: BoxDecoration(
