@@ -45,7 +45,7 @@ dependencies:
   connectivity: ^2.0.2
   #本地存储
   shared_preferences: ^0.5.12+4
-  flutter_easyrefresh: ^2.0.5
+  flutter_easyrefresh: ^2.1.7
   flutter_slidable: ^1.2.0
   fluttertoast: ^8.0.9
   flutter_spinkit: ^5.1.0

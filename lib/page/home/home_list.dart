@@ -8,6 +8,7 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:intl/intl.dart';
 import 'filters_screen.dart';
 import 'package:demo_app/common/app_theme.dart';
 import 'package:demo_app/routes/navigation.dart';
@@ -139,7 +140,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
     });
   }
 
-  /// 我的好友
+  /// 首页瀑布流
   Widget _list(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 1),
@@ -203,6 +204,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
 
     // Color.fromARGB(math.Random().nextInt(256), math.Random().nextInt(256), math.Random().nextInt(256),
 
+    var formatter = DateFormat('yy-MM-dd hh:mm:ss');
+    var time = formatter.format(item.createdAt);
+
     return Card(
       // Give each item a random background color
       color: Colors.white,
@@ -265,7 +269,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
               ),
             ),
 
-            // 描述
             Expanded(
               child: Container(
                   decoration: BoxDecoration(
@@ -282,6 +285,19 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
                         style: TextStyle(color: Colors.grey,fontSize: ScreenUtil.getInstance().setSp(30), fontWeight: FontWeight.normal)
                     ),
                   )
+              ),
+            ),
+            Container(
+              alignment: Alignment.bottomRight,
+              width: double.infinity,
+              child: Padding(
+                padding: EdgeInsets.only(right: ScreenUtil.getInstance().setWidth(2)),
+                child: Text(
+                    time,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(color: Colors.grey,fontSize: ScreenUtil.getInstance().setSp(25), fontWeight: FontWeight.normal)
+                ),
               ),
             )
 
@@ -316,24 +332,20 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
         children: [
           Expanded(
             flex: 2,
-            child: Padding(
-              padding: EdgeInsets.only(right: ScreenUtil.getInstance().setWidth(20)),
-              child: Container(
-                  height: ScreenUtil.getInstance().setHeight(140),
-                  decoration: BoxDecoration(
-                    color: HomeAppTheme.buildLightTheme().backgroundColor,
-                    borderRadius: BorderRadius.all(
-                        cir
-                    ),
-                    boxShadow: <BoxShadow>[
-                      BoxShadow(color: Colors.grey.withOpacity(0.2), offset: const Offset(0, 2), blurRadius: 8.0),
-                    ],
-                  ),
-                  child: moneyIcon(),
+            child: Container(
+              height: ScreenUtil.getInstance().setHeight(140),
+              decoration: BoxDecoration(
+                color: HomeAppTheme.buildLightTheme().backgroundColor,
+                borderRadius: BorderRadius.all(
+                    cir
+                ),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(color: Colors.grey.withOpacity(0.2), offset: const Offset(0, 2), blurRadius: 8.0),
+                ],
               ),
-            )
+              child: moneyIcon(),
+            ),
           ),
-
 
         ],
       ),
@@ -345,14 +357,11 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
       padding: EdgeInsets.only(left: ScreenUtil.getInstance().setWidth(28)),
       child: Row(
         children: [
-          box(AppTheme.secondaryColor, Center(
-              child: Expanded(
-                child: Padding(
-                  padding: EdgeInsets.all(3),
-                  child: Text("当月目标", style: TextStyle(fontSize: 12, color: AppTheme.secondaryColor)),
-                ),
-              )
-          )),
+          box(AppTheme.secondaryColor, Padding(
+            padding: EdgeInsets.all(ScreenUtil.getInstance().setSp(3)),
+            child: Text("当月目标", style: TextStyle(fontSize: 12, color: AppTheme.secondaryColor))
+          )
+          ),
           Spacer(
             flex: 2,
           ),

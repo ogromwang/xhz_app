@@ -44,6 +44,11 @@ class _HomeDrawerState extends State<HomeDrawer> {
         icon: Icon(Icons.people_sharp),
       ),
       DrawerList(
+        index: DrawerIndex.Me,
+        labelName: '我的',
+        icon: Icon(Icons.sentiment_very_satisfied_sharp),
+      ),
+      DrawerList(
         index: DrawerIndex.About,
         labelName: '关于',
         icon: Icon(Icons.info),
@@ -292,6 +297,7 @@ enum DrawerIndex {
   About,
   Invite,
   Testing,
+  Me
 }
 
 class DrawerList {

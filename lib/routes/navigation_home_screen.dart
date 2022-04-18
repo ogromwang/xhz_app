@@ -2,6 +2,7 @@ import 'package:demo_app/common/app_theme.dart';
 import 'package:demo_app/custom_drawer/drawer_user_controller.dart';
 import 'package:demo_app/custom_drawer/home_drawer.dart';
 import 'package:demo_app/page/home/home_list.dart';
+import 'package:demo_app/page/me/me_list.dart';
 import 'package:flutter/material.dart';
 import 'package:demo_app/page/friends/my_friends_list.dart';
 
@@ -57,6 +58,11 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
         case DrawerIndex.Friends:
           setState(() {
             screenView = MyFriendsList();
+          });
+          break;
+        case DrawerIndex.Me:
+          setState(() {
+            screenView = MeList();
           });
           break;
         case DrawerIndex.About:
