@@ -198,9 +198,10 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
       height = ScreenUtil.getInstance().setSp(660);
     }
 
-    var image = ImageWidget(url: item.image);
+    // var image = ImageWidget(url: item.image);
+    var image = ImageWidget.getImage(item.image);
 
-    var profile = ImageWidget(url: item.profilePicture);
+    var profile =  ImageWidget.getImage(item.profilePicture);
 
     // Color.fromARGB(math.Random().nextInt(256), math.Random().nextInt(256), math.Random().nextInt(256),
 

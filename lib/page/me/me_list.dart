@@ -55,9 +55,9 @@ class _MeListState extends State<MeList> {
     double height = ScreenUtil.getInstance().setSp(260);
 
     var cir = Radius.circular(ScreenUtil.getInstance().setSp(20));
-    var image = ImageWidget(url: item.image);
+    var image = ImageWidget.getImage(item.image);
 
-    var profile = ImageWidget(url: item.profilePicture);
+    // var profile = ImageWidget.getImage(item.profilePicture);
 
     // Color.fromARGB(math.Random().nextInt(256), math.Random().nextInt(256), math.Random().nextInt(256),
 
