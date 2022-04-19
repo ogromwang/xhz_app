@@ -22,7 +22,6 @@ class MeList extends StatefulWidget {
 }
 
 class _MeListState extends State<MeList> {
-
   var _recordMeModel = RecordMeModel();
 
   final EasyRefreshController _controller = EasyRefreshController();
@@ -40,7 +39,6 @@ class _MeListState extends State<MeList> {
   @override
   void initState() {
     super.initState();
-
   }
 
   @override
@@ -53,7 +51,7 @@ class _MeListState extends State<MeList> {
     );
   }
 
-  Widget _getItem(BuildContext context, int index, Item item) {
+  Widget _getItem(BuildContext context, Item item) {
     double height = ScreenUtil.getInstance().setSp(260);
 
     var cir = Radius.circular(ScreenUtil.getInstance().setSp(20));
@@ -67,6 +65,7 @@ class _MeListState extends State<MeList> {
     var time = formatter.format(item.createdAt);
 
     return Card(
+      elevation: 0.2,
       // Give each item a random background color
       color: Colors.white,
       child: Container(
@@ -81,82 +80,76 @@ class _MeListState extends State<MeList> {
                     borderRadius: BorderRadius.only(topLeft: cir, bottomLeft: cir),
                   ),
                   height: double.infinity,
-                  child: ClipRRect(borderRadius: BorderRadius.only(topLeft: cir, bottomLeft: cir),child: image),
+                  child: ClipRRect(borderRadius: BorderRadius.only(topLeft: cir, bottomLeft: cir), child: image),
                 ),
               ),
 
               Expanded(
-                flex: 2,
-                child: Column(
-                  children: [
-                    // 描述
-                    Expanded(
-                      flex: 2,
-                      child: Container(
-                          decoration: BoxDecoration(
-                            // border: Border.all(color: Color(0xFFFF0000), width: 0.5),
-                          ),
-                          // height: height * 0.15,
-                          width: double.infinity,
-                          height: double.infinity,
-                          child: Padding(
-                            padding: EdgeInsets.only(left: ScreenUtil.getInstance().setSp(12)),
-                            child: Text(
-                                "\t\t" + item.describe,
-                                maxLines: 4,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(color: Colors.grey,fontSize: ScreenUtil.getInstance().setSp(30), fontWeight: FontWeight.normal)
-                            ),
-                          )
-                      ),
-                    ),
-
-                    // 金钱
-                    Expanded(
+                  flex: 2,
+                  child: Column(
+                    children: [
+                      // 描述
+                      Expanded(
+                        flex: 2,
                         child: Container(
-                            alignment: Alignment.centerRight,
+                            decoration: BoxDecoration(
+                                // border: Border.all(color: Color(0xFFFF0000), width: 0.5),
+                                ),
+                            // height: height * 0.15,
+                            width: double.infinity,
+                            height: double.infinity,
                             child: Padding(
-                              padding: EdgeInsets.only(right: ScreenUtil.getInstance().setSp(10), top: ScreenUtil.getInstance().setSp(5)),
-                              child: Text(
-                                  "-￥"+item.money.toStringAsFixed(2),
+                              padding: EdgeInsets.only(left: ScreenUtil.getInstance().setSp(12)),
+                              child: Text("\t\t" + item.describe,
+                                  maxLines: 4,
                                   overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(color: AppTheme.redColor ,fontSize: ScreenUtil.getInstance().setSp(40), fontWeight: FontWeight.w400)),
-                            )
-                        )
-                    ),
-
-                    // 时间
-                    Container(
-                      alignment: Alignment.bottomRight,
-                      width: double.infinity,
-                      child: Padding(
-                        padding: EdgeInsets.only(right: ScreenUtil.getInstance().setWidth(2)),
-                        child: Text(
-                            time,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(color: Colors.grey,fontSize: ScreenUtil.getInstance().setSp(25), fontWeight: FontWeight.normal)
-                        ),
+                                  style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: ScreenUtil.getInstance().setSp(30),
+                                      fontWeight: FontWeight.normal)),
+                            )),
                       ),
-                    )
-                  ],
-                )
-              )
+
+                      // 金钱
+                      Expanded(
+                          child: Container(
+                              alignment: Alignment.centerRight,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                    right: ScreenUtil.getInstance().setSp(10), top: ScreenUtil.getInstance().setSp(5)),
+                                child: Text("-￥" + item.money.toStringAsFixed(2),
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        color: AppTheme.redColor,
+                                        fontSize: ScreenUtil.getInstance().setSp(50),
+                                        fontWeight: FontWeight.w400)),
+                              ))),
+
+                      // 时间
+                      Container(
+                        alignment: Alignment.bottomRight,
+                        width: double.infinity,
+                        child: Padding(
+                          padding: EdgeInsets.only(right: ScreenUtil.getInstance().setWidth(2)),
+                          child: Text(time,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  color: AppTheme.fontColor,
+                                  fontSize: ScreenUtil.getInstance().setSp(40),
+                                  fontWeight: FontWeight.normal)),
+                        ),
+                      )
+                    ],
+                  ))
             ],
-          )
-      ),
+          )),
     );
   }
 
   /// 内容
   Widget _scaffold(BuildContext context) {
-    return Scaffold(
-        body: Column(children: <Widget>[
-          getAppBarUI(),
-          Expanded(
-              child: _myRecord(context)
-          )
-        ]));
+    return Scaffold(body: Column(children: <Widget>[getAppBarUI(), Expanded(child: _myRecord(context))]));
   }
 
   /// 我的花销记录
@@ -180,41 +173,71 @@ class _MeListState extends State<MeList> {
         footer: BallPulseFooter(),
         onRefresh: _enableRefresh
             ? () async {
-          _recordMeModel.refreshData(context).then((value) {
-            if (mounted) {
-              setState(() {
-                _recordMeModel = _recordMeModel;
-              });
-              if (!_enableControlFinish) {
-                _controller.resetLoadState();
-                _controller.finishRefresh();
+                _recordMeModel.refreshData(context).then((value) {
+                  if (mounted) {
+                    setState(() {
+                      _recordMeModel = _recordMeModel;
+                    });
+                    if (!_enableControlFinish) {
+                      _controller.resetLoadState();
+                      _controller.finishRefresh();
+                    }
+                  }
+                });
               }
-            }
-          });
-        }
             : null,
         onLoad: _enableLoad
             ? () async {
-          _recordMeModel.loadMoreData(context).then((value) {
-            if (mounted) {
-              setState(() {
-                _recordMeModel = _recordMeModel;
-              });
-              if (!_enableControlFinish) {
-                _controller
-                    .finishLoad(noMore: !_recordMeModel.data.more);
+                _recordMeModel.loadMoreData(context).then((value) {
+                  if (mounted) {
+                    setState(() {
+                      _recordMeModel = _recordMeModel;
+                    });
+                    if (!_enableControlFinish) {
+                      _controller.finishLoad(noMore: !_recordMeModel.data.more);
+                    }
+                  }
+                });
               }
-            }
-          });
-        }
             : null,
         slivers: <Widget>[
           SliverList(
-            delegate: SliverChildBuilderDelegate((context, index) {
-                var item = _recordMeModel.data.list[index];
-                return _getItem(context, index, item);
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                /// 日期
+                var dateStr = _recordMeModel.groupKeys[index];
+
+                var list = _recordMeModel.group[dateStr];
+                List<Widget> child = [];
+
+                var dateWidget = ClipRRect(
+                    borderRadius: BorderRadius.circular(ScreenUtil.getInstance().setSp(60)),
+                    child: Container(
+                      height: ScreenUtil.getInstance().setHeight(70),
+                      width: ScreenUtil.getInstance().setWidth(300),
+                      color: AppTheme.secondaryColor,
+                      alignment: Alignment.center,
+                      child: Text(
+                        dateStr,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: ScreenUtil.getInstance().setSp(40),
+                            color: Colors.white
+                        ),
+                      ),
+                    )
+                );
+
+                child.add(Padding(
+                  padding: EdgeInsets.all(ScreenUtil.getInstance().setSp(30)),
+                  child: dateWidget,
+                ));
+                list?.forEach((Item item) {
+                  child.add(_getItem(context, item));
+                });
+                return Column(children: child);
               },
-              childCount: _recordMeModel.data.list.length,
+              childCount: _recordMeModel.groupKeys.length,
             ),
           ),
         ],
@@ -226,18 +249,13 @@ class _MeListState extends State<MeList> {
   Widget getAppBarUI() {
     return Container(
       decoration: BoxDecoration(
-        color: HomeAppTheme
-            .buildLightTheme()
-            .backgroundColor,
+        color: HomeAppTheme.buildLightTheme().backgroundColor,
         boxShadow: <BoxShadow>[
           BoxShadow(color: Colors.grey.withOpacity(0.2), offset: const Offset(0, 2), blurRadius: 8.0),
         ],
       ),
       child: Padding(
-        padding: EdgeInsets.only(top: MediaQuery
-            .of(context)
-            .padding
-            .top, left: 8, right: 8),
+        padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top, left: 8, right: 8),
         child: Row(
           children: <Widget>[
             // 左箭头
@@ -260,14 +278,13 @@ class _MeListState extends State<MeList> {
 
   Widget getCenterText() {
     return Center(
-        child: Text(
-          "我的",
-          style: const TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 22,
-          ),
+      child: Text(
+        "我的",
+        style: const TextStyle(
+          fontWeight: FontWeight.w600,
+          fontSize: 22,
         ),
+      ),
     );
   }
-
 }
