@@ -208,6 +208,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
     var time = formatter.format(item.createdAt);
 
     return Card(
+      elevation: 0.2,
       // Give each item a random background color
       color: Colors.white,
       child: Container(
