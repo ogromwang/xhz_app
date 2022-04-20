@@ -532,9 +532,14 @@ class MyInterceptor extends Interceptor {
     try {
       var resp = response.data as Map<String, dynamic>;
       var err = resp['error'] as String;
+      var code = resp['code'] as int;
       if (err != "") {
         ToastUtil.err(err);
       }
+      if (code == 400) {
+        // todo 调到首页登录
+      }
+
     } catch (e) {
       print("resp try catch出现错误 $e");
     }
