@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:demo_app/common/popup.dart';
+import 'package:demo_app/common/widgets.dart';
 import 'package:demo_app/model/account/result/profile.dart';
 import 'package:demo_app/model/common/result/common_model_result.dart';
 import 'package:dio/dio.dart';
@@ -31,9 +32,14 @@ class ProfileModel {
     final pickFile = await imagePicker.getImage(source: ImageSource.gallery);
 
     if (pickFile != null) {
-      var _image = File(pickFile.path);
+      var composeImage = await ImageCompose.imageCompressAndGetFile(File(pickFile.path));
+      String path = pickFile.path;
+      if (composeImage != null) {
+        path = composeImage.path;
+      }
+
       var data = FormData.fromMap({
-        "file": await MultipartFile.fromFile(pickFile.path)
+        "file": await MultipartFile.fromFile(path)
       });
       var op = Options(
         sendTimeout: 60000

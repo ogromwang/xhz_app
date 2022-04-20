@@ -53,6 +53,10 @@ dependencies:
   image_picker: ^0.6.7+21
   # 屏幕像素大小适配
   flutter_screenutil: ^0.5.2
+  # 图片压缩
+  flutter_image_compress: ^1.0.0-nullsafety
+  path_provider: ^1.6.28
+
 
 dev_dependencies:
   flutter_test:

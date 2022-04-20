@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:demo_app/common/popup.dart';
+import 'package:demo_app/common/widgets.dart';
 import 'package:demo_app/model/common/result/common_model_result.dart';
 import 'package:demo_app/model/sign/result/sign_model.dart';
 import 'package:dio/dio.dart';
@@ -30,7 +33,12 @@ class RecordModel {
     };
 
     if (photo.isNotEmpty) {
-      param["file"]= await MultipartFile.fromFile(photo);
+      var fileCompose = await ImageCompose.imageCompressAndGetFile(File(photo));
+      if (fileCompose == null) {
+        ToastUtil.err("图片处理失败");
+        return;
+      }
+      param["file"]= await MultipartFile.fromFile(fileCompose.path);
     }
 
     var op = Options(

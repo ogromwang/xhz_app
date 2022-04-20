@@ -1,4 +1,5 @@
 import 'package:demo_app/common/app_theme.dart';
+import 'package:demo_app/common/widgets.dart';
 import 'package:demo_app/model/account/profile.dart';
 import 'package:demo_app/request/dio.dart';
 import 'package:flutter/material.dart';
@@ -135,11 +136,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
 
   /// 用户头像
   Widget _profilePicture() {
-    var image = Image.asset("assets/images/nodata.png");
-    var pic = _profileModel.data?.profilePicture ?? "";
-    if (pic != "") {
-      image = Image.network('${pic}', fit: BoxFit.cover);
-    }
+    var image = ImageWidget.getImage(_profileModel.data?.profilePicture ?? "");
 
     return AnimatedBuilder(
       animation: widget.iconAnimationController!,

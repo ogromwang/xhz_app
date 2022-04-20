@@ -213,7 +213,6 @@ class _PushRecordScreenState extends State<PushRecordScreen> {
                     if (pickFile != null) {
                       setState(() {
                         _recordModel.photo = pickFile.path;
-                        print('地址为 ${pickFile.path}');
                       });
                     }
 
@@ -239,7 +238,6 @@ class _PushRecordScreenState extends State<PushRecordScreen> {
                     if (pickFile != null) {
                       setState(() {
                         _recordModel.photo = pickFile.path;
-                        print('地址为 ${pickFile.path}');
                       });
                     }
                   },

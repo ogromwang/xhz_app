@@ -2,6 +2,9 @@ import 'package:demo_app/common/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart' as path_provider;
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 
 typedef OnChanged = void Function(String? text);
 typedef OnTap = void Function();
@@ -178,4 +181,43 @@ class ImageWidget {
       },
     );
   }
+}
+
+class ImageCompose {
+  /// 图片压缩 File -> File
+  static Future<File?> imageCompressAndGetFile(File file) async {
+    if (file.lengthSync() < 200 * 1024) {
+      return file;
+    }
+    var quality = 100;
+    if (file.lengthSync() > 4 * 1024 * 1024) {
+      quality = 50;
+    } else if (file.lengthSync() > 2 * 1024 * 1024) {
+      quality = 60;
+    } else if (file.lengthSync() > 1 * 1024 * 1024) {
+      quality = 70;
+    } else if (file.lengthSync() > 0.5 * 1024 * 1024) {
+      quality = 80;
+    } else if (file.lengthSync() > 0.25 * 1024 * 1024) {
+      quality = 90;
+    }
+    var dir = await path_provider.getTemporaryDirectory();
+    var targetPath = dir.absolute.path +"/"+DateTime.now().millisecondsSinceEpoch.toString()+ ".jpg";
+
+    var result = await FlutterImageCompress.compressAndGetFile(
+      file.absolute.path,
+      targetPath,
+      minWidth: 300,
+      quality: quality,
+      rotate: 0,
+    );
+
+    print("压缩前：${file.lengthSync() / 1024}");
+    if (result != null) {
+      print("压缩后：${result.lengthSync() / 1024}");
+    }
+
+    return result;
+  }
+
 }
