@@ -48,57 +48,13 @@ class _FindFriendsState extends State<FindFriends> {
 
   Widget _getSliceItem(BuildContext context, int index) {
     var item = stateModel.listData.list[index];
-    return Slidable(
-        key: ValueKey("$index"),
-        // 同一组
-        groupTag: "ccc",
-        child: _getItem(context, index),
-        // 左侧按钮列表
-        startActionPane: ActionPane(
-          extentRatio: 0.3,
-          // 滑出选项的面板 动画
-          motion: const DrawerMotion(),
-          children: [
-            SlidableAction(
-              onPressed: (_) {
-                stateModel.applyAddFriend(context, item.id);
-              },
-              backgroundColor: Colors.teal,
-              icon: Icons.account_circle_sharp,
-              label: '申请好友',
-            )
-          ],
-        ));
-  }
-
-  Widget _getItem(BuildContext context, int index) {
-    var item = stateModel.listData.list[index];
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 4),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+    return Column(
+      children: [
         Slidable(
             key: ValueKey("$index"),
             // 同一组
             groupTag: "ccc",
-            child: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 10),
-                  child: SizedBox(
-                    height: 60,
-                    width: 60,
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.all(Radius.circular(40.0)),
-                      child: Image.network('${item.profilePicture}', fit: BoxFit.cover),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width - 100,
-                  child: Text(item.username, overflow: TextOverflow.ellipsis),
-                ),
-              ],
-            ),
+            child: _getItem(context, index),
             // 左侧按钮列表
             startActionPane: ActionPane(
               extentRatio: 0.3,
@@ -109,40 +65,68 @@ class _FindFriendsState extends State<FindFriends> {
                   onPressed: (_) {
                     stateModel.applyAddFriend(context, item.id);
                   },
-                  backgroundColor: Colors.teal,
+                  backgroundColor: AppTheme.primaryColor,
                   icon: Icons.account_circle_sharp,
                   label: '申请好友',
                 )
               ],
-            )),
+            )
+        ),
+
         Divider()
-      ]),
+      ],
+    );
+  }
+
+  Widget _getItem(BuildContext context, int index) {
+    var item = stateModel.listData.list[index];
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4),
+      child: Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 10),
+            child: SizedBox(
+              height: 60,
+              width: 60,
+              child: ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(40.0)),
+                child: ImageWidget.getImage(item.profilePicture),
+              ),
+            ),
+          ),
+          SizedBox(
+            width: MediaQuery.of(context).size.width - 100,
+            child: Text(item.username, overflow: TextOverflow.ellipsis),
+          ),
+        ],
+      ),
     );
   }
 
   Widget _scaffold(BuildContext context) {
     return Scaffold(
         body: Column(children: <Widget>[
-        getAppBarUI(),
-        SearchBar.custom((text) {
-          stateModel.username = text!;
-        }, () {
-          // 每次点击搜索都是从第一页开始, 相当于刷新
-          stateModel.refreshData(context).then((value) {
-            if (mounted) {
-              setState(() {
-                stateModel = stateModel;
-                var noMore = stateModel.listData.list.length >= stateModel.listData.total;
-                if (!noMore) {
-                  _enableLoad = true;
-                }
-                if (!_enableControlFinish) {
-                  _controller.finishLoad(noMore: noMore);
-                }
-              });
-            }
-          });
-        }),
+      getAppBarUI(),
+      SearchBar.custom((text) {
+        stateModel.username = text!;
+      }, () {
+        // 每次点击搜索都是从第一页开始, 相当于刷新
+        stateModel.refreshData(context).then((value) {
+          if (mounted) {
+            setState(() {
+              stateModel = stateModel;
+              var noMore = stateModel.listData.list.length >= stateModel.listData.total;
+              if (!noMore) {
+                _enableLoad = true;
+              }
+              if (!_enableControlFinish) {
+                _controller.finishLoad(noMore: noMore);
+              }
+            });
+          }
+        });
+      }),
       Expanded(
         child: Padding(
           padding: const EdgeInsets.only(top: 8),
@@ -205,33 +189,43 @@ class _FindFriendsState extends State<FindFriends> {
     ]));
   }
 
-  // 顶部的布局
+  /// 上方的 app bar
   Widget getAppBarUI() {
     return Container(
       decoration: BoxDecoration(
         color: HomeAppTheme.buildLightTheme().backgroundColor,
         boxShadow: <BoxShadow>[
-          BoxShadow(color: Colors.grey.withOpacity(0.2), offset: const Offset(0, 2), blurRadius: 8.0),
+          BoxShadow(color: Colors.grey.withOpacity(0.2), offset: const Offset(0, 2), blurRadius: 4.0),
         ],
       ),
       child: Padding(
         padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top, left: 8, right: 8),
         child: Row(
           children: <Widget>[
-            // 左箭头
             Container(
               alignment: Alignment.centerLeft,
               width: AppBar().preferredSize.height + 40,
               height: AppBar().preferredSize.height,
-              child: const Material(color: Colors.transparent, child: Text("")),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(32.0),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(Icons.close),
+                  ),
+                ),
+              ),
             ),
-
-            // 中间文字
-            const Expanded(
-              flex: 2,
+            Expanded(
               child: Center(
                 child: Text(
-                  "搜寻用户",
+                  '寻找用户',
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 22,
@@ -239,8 +233,10 @@ class _FindFriendsState extends State<FindFriends> {
                 ),
               ),
             ),
-
-            Spacer()
+            Container(
+              width: AppBar().preferredSize.height + 40,
+              height: AppBar().preferredSize.height,
+            )
           ],
         ),
       ),

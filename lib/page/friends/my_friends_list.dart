@@ -72,7 +72,7 @@ class _MyFriendsListState extends State<MyFriendsList> {
                 width: 60,
                 child: ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(40.0)),
-                  child: Image.network('${item.profilePicture}', fit: BoxFit.cover),
+                  child: ImageWidget.getImage(item.profilePicture),
                 ),
               ),
             ),
@@ -306,7 +306,7 @@ class _MyFriendsListState extends State<MyFriendsList> {
                     width: 60,
                     child: ClipRRect(
                       borderRadius: const BorderRadius.all(Radius.circular(40.0)),
-                      child: Image.network('${item.profilePicture}', fit: BoxFit.cover),
+                      child: ImageWidget.getImage(item.profilePicture),
                     ),
                   ),
                 ),
@@ -331,7 +331,7 @@ class _MyFriendsListState extends State<MyFriendsList> {
                     applyFriendsModel.handleApply(
                         context, item.id, 2, () => controllerMaps[1]!._controller.callRefresh());
                   },
-                  backgroundColor: Colors.red,
+                  backgroundColor: AppTheme.redColor,
                   icon: Icons.cancel,
                   label: '拒绝',
                 ),
@@ -341,7 +341,7 @@ class _MyFriendsListState extends State<MyFriendsList> {
                     applyFriendsModel.handleApply(
                         context, item.id, 1, () => controllerMaps[1]!._controller.callRefresh());
                   },
-                  backgroundColor: Colors.teal,
+                  backgroundColor: AppTheme.secondaryColor,
                   icon: Icons.check_circle,
                   label: '同意',
                 ),

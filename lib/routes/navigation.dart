@@ -1,5 +1,6 @@
 
 import 'package:demo_app/page/add/push_record.dart';
+import 'package:demo_app/page/friends/find_friends.dart';
 import 'package:flutter/material.dart';
 
 // NavigationButton 下方的导航栏
@@ -78,7 +79,12 @@ class FloatingAddFriendButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: () {
-        Navigator.pushNamed(context, '/find');
+        FocusScope.of(context).requestFocus(FocusNode());
+        Navigator.push<dynamic>(
+          context,
+          MaterialPageRoute<dynamic>(builder: (BuildContext context) => FindFriends(), fullscreenDialog: true),
+        );
+
       },
       child: const Icon(Icons.search, color: Colors.white,),
     );
