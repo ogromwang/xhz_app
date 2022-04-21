@@ -1,3 +1,4 @@
+import 'package:demo_app/common/vars.dart';
 import 'package:demo_app/routes/navigation_home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:demo_app/routes/routes.dart';
@@ -18,7 +19,7 @@ Future<void> init() async {
   await SpUtil().init();
   // 初始化request类
   HttpUtils.init(
-    baseUrl: "http://192.168.0.116/",
+    baseUrl: "http://172.16.68.10/",
     connectTimeout: 6500,
     receiveTimeout: 6500,
     sendTimeout: 6500
@@ -35,6 +36,7 @@ class BootApplication extends StatelessWidget {
     return MaterialApp(
       title: "xhz",
       debugShowCheckedModeBanner: false,
+      navigatorKey: navigatorKey,
       routes: Routes.data,
       home: HomeWidget()
     );

@@ -8,6 +8,7 @@ import 'package:demo_app/model/account/result/account.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:demo_app/common/vars.dart';
 
 class HttpUtils {
   static void init({
@@ -538,6 +539,8 @@ class MyInterceptor extends Interceptor {
       }
       if (code == 400) {
         // todo 调到首页登录
+        // Navigator.of().pushNamedAndRemoveUntil("/login", (Route<dynamic> route) => false);
+        navigatorKey.currentState?.pushNamedAndRemoveUntil("/login", (Route<dynamic> route) => false);
       }
 
     } catch (e) {
