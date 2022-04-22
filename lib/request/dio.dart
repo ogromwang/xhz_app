@@ -538,8 +538,6 @@ class MyInterceptor extends Interceptor {
         ToastUtil.err(err);
       }
       if (code == 400) {
-        // todo 调到首页登录
-        // Navigator.of().pushNamedAndRemoveUntil("/login", (Route<dynamic> route) => false);
         navigatorKey.currentState?.pushNamedAndRemoveUntil("/login", (Route<dynamic> route) => false);
       }
 

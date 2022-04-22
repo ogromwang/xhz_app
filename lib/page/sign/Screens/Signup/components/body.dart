@@ -56,10 +56,6 @@ class Body extends StatelessWidget {
             RoundedButton(
               text: "注册",
               press: () {
-                if (_password != _rePassword) {
-                  ToastUtil.err("两次密码输入不一致");
-                  return;
-                }
                 _signModel.signup(context, _username, _password, _rePassword);
               },
             ),

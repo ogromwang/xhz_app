@@ -31,18 +31,36 @@ class SignModel {
   }
 
   /// 注册
-  Future signup(BuildContext context, String username, password, rePassword) async {
-    var data = {
-      "username": username,
-      "password": password,
-      "rePassword": rePassword
-    };
-    var value = await HttpUtils.post("/v1/account/signup", data: data);
-    var result = BoolModelResult.fromJson(value);
-    if (result.code == 200 && result.data) {
-      ToastUtil.err("注册成功，去登录");
-      // 跳转到登录
-      Navigator.of(context).pushNamedAndRemoveUntil("/login", (Route<dynamic> route) => false);
+  Future signup(BuildContext context, String username, String password, String rePassword) async {
+    if (password.length < 5 || password.length > 12) {
+      ToastUtil.err("密码长度应该在[5-12]");
+      return;
+    }
+    if (username.length > 6) {
+      ToastUtil.err("用户名不能超过[6]");
+      return;
+    }
+    if (password != rePassword) {
+      ToastUtil.err("两次密码输入不一致");
+      return;
+    }
+
+    try {
+      Loading.show(context);
+      var data = {
+        "username": username,
+        "password": password,
+        "rePassword": rePassword
+      };
+      var value = await HttpUtils.post("/v1/account/signup", data: data);
+      var result = BoolModelResult.fromJson(value);
+      if (result.code == 200 && result.data) {
+        ToastUtil.err("注册成功，去登录");
+        // 跳转到登录
+        Navigator.of(context).pushNamedAndRemoveUntil("/login", (Route<dynamic> route) => false);
+      }
+    } finally {
+      Loading.dismiss(context);
     }
 
   }
