@@ -8,7 +8,7 @@ class GoalModel {
   //请求数据的方法
   Future<void> getGoal(BuildContext context) async {
 
-    var value = await HttpUtils.get("v1/record/all", params: );
+    // var value = await HttpUtils.get("v1/record/all", params: );
   }
 
 
