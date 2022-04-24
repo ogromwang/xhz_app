@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:demo_app/common/popup.dart';
 import 'package:demo_app/common/widgets.dart';
+import 'package:demo_app/model/goal/goal_model.dart';
 import 'package:demo_app/model/record/record_all_model.dart';
 import 'package:demo_app/model/record/result/record_result.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +41,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
 
   // 数据list
   RecordAllModel _recordAllModel = RecordAllModel();
+  // 目标
+  GoalModel _goalModel = GoalModel();
 
   final ScrollController _scrollController2 = ScrollController();
 
@@ -50,6 +53,10 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
     pageController = PageController(viewportFraction: 0.84);
     pageController.addListener(() {
       setState(() => pageOffset = pageController.page!);
+    });
+
+    _goalModel.getGoal(context).then((value) {
+      _goalModel = _goalModel;
     });
 
     searchList();
@@ -355,13 +362,30 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
   }
 
   Widget moneyIcon() {
+    var name = "个人目标";
+    var curr = 0.00;
+    var goal = 0.00;
+    var color = AppTheme.secondaryColor;
+
+    for (var element in _goalModel.data) {
+      if (element.type == 1) {
+        name = element.name;
+        curr = element.currMoney;
+        goal = element.goal;
+
+        if (goal > 0 && curr / goal > 0.7) {
+          color = AppTheme.redColor;
+        }
+      }
+    }
+
     return Padding(
       padding: EdgeInsets.only(left: ScreenUtil.getInstance().setWidth(28)),
       child: Row(
         children: [
-          box(AppTheme.secondaryColor, Padding(
+          box(color, Padding(
             padding: EdgeInsets.all(ScreenUtil.getInstance().setSp(3)),
-            child: Text("当月目标", style: TextStyle(fontSize: 12, color: AppTheme.secondaryColor))
+            child: Text(name, style: TextStyle(fontSize: 12, color: color))
           )
           ),
           Spacer(
@@ -369,7 +393,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
           ),
           Expanded(
             flex: 2,
-            child: Text("200 / 2000")
+            child: Text("$curr / $goal", style: TextStyle(color: color),)
           )
         ],
       ),
