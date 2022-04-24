@@ -1,5 +1,4 @@
 import 'dart:ui';
-import 'package:demo_app/common/popup.dart';
 import 'package:demo_app/common/widgets.dart';
 import 'package:demo_app/model/goal/goal_model.dart';
 import 'package:demo_app/model/record/record_all_model.dart';
@@ -383,10 +382,15 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
       padding: EdgeInsets.only(left: ScreenUtil.getInstance().setWidth(28)),
       child: Row(
         children: [
-          box(color, Padding(
-            padding: EdgeInsets.all(ScreenUtil.getInstance().setSp(3)),
-            child: Text(name, style: TextStyle(fontSize: 12, color: color))
-          )
+          InkWell(
+            onTap: () {
+              print("你点击了");
+              openBottom();
+            },
+            child: box(color, Padding(
+                padding: EdgeInsets.all(ScreenUtil.getInstance().setSp(3)),
+                child: Text(name, style: TextStyle(fontSize: 12, color: color))
+            ))
           ),
           Spacer(
             flex: 2,
@@ -597,6 +601,12 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
         ),
       ),
     );
+  }
+
+
+  void openBottom() {
+    //出现底部弹窗
+
   }
 }
 
