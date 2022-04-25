@@ -45,7 +45,7 @@ class RecordMeModel {
   void toGroup() {
     _group.clear();
     _groupKeys.clear();
-    var monthFormat = DateFormat('yy-MM');
+    var monthFormat = DateFormat('yyyy-MM');
     var groupByDate = groupBy(_result.data.list, (Item obj) => monthFormat.format(obj.createdAt));
     _group = groupByDate;
 
