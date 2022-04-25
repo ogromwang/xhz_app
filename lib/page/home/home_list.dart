@@ -54,11 +54,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
       setState(() => pageOffset = pageController.page!);
     });
 
-    _goalModel.getGoal(context).then((value) {
-      _goalModel = _goalModel;
-    });
-
-
     super.initState();
   }
 
@@ -142,6 +137,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
           _controller.finishRefresh();
         }
       }
+    });
+    _goalModel.getGoal(context).then((value) {
+      _goalModel = _goalModel;
     });
   }
 

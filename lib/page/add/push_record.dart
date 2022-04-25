@@ -160,7 +160,7 @@ class _PushRecordScreenState extends State<PushRecordScreen> {
               margin: EdgeInsets.fromLTRB(0, 0, 4, 0),
               height: height,
               alignment: Alignment.center,
-              child: showPhoto(),
+              child: showPhoto(height),
             ),
           )
         ),
@@ -169,12 +169,12 @@ class _PushRecordScreenState extends State<PushRecordScreen> {
     );
   }
 
-  Widget showPhoto() {
+  Widget showPhoto(double? height) {
     if (_recordModel.photo.isNotEmpty) {
       return Expanded(
         child: Image.file(
           File(_recordModel.photo),
-          height: double.infinity,
+          height: height,
           fit: BoxFit.fill,
         ),
       );
