@@ -239,6 +239,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
             ),
             // 头像 - 名字
             Expanded(
+              flex: 2,
               child: Row(
                 children: [
                   // 头像
@@ -247,7 +248,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
                     child: Container(
                       height: ScreenUtil.getInstance().setSp(70),
                       width: ScreenUtil.getInstance().setSp(70),
-                      child: ClipRRect(borderRadius: const BorderRadius.all(Radius.circular(60.0)), child: profile),
+                      child: ClipRRect(borderRadius: const BorderRadius.all(Radius.circular(70.0)), child: profile),
                     ),
                   ),
                   // 名字
