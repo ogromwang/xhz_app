@@ -31,7 +31,9 @@ class Loading extends StatelessWidget {
   }
 
   static void dismiss(context) {
-    Navigator.canPop(context);
+    if (Navigator.canPop(context)) {
+      Navigator.pop(context);
+    }
   }
 
   @override

@@ -126,6 +126,7 @@ class _PushRecordScreenState extends State<PushRecordScreen> {
         SliderView(
           distValue: _recordModel.money,
           onChangedistValue: (double value) {
+            print(value);
             _recordModel.money = value;
           },
         ),

@@ -102,6 +102,7 @@ class _SliderViewState extends State<SliderView> {
       ),
       autofocus: false,
       onChanged: (val) {
+        print(val);
         var d = double.parse(val);
         setState(() {
           distValue = d;
@@ -119,6 +120,11 @@ class _SliderViewState extends State<SliderView> {
           if (d > 100) {
             maxLen = distValue;
           }
+
+          try {
+            widget.onChangedistValue!(distValue);
+          } catch (_) {}
+
         });
       },
     );

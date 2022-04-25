@@ -28,7 +28,7 @@ class ProfileModel {
   }
 
   /// 修改头像
-  Future<bool> updateProfilePicture(BuildContext context) async {
+  Future<void> updateProfilePicture(BuildContext context) async {
     final pickFile = await imagePicker.getImage(source: ImageSource.gallery);
 
     if (pickFile != null) {
@@ -49,16 +49,14 @@ class ProfileModel {
         Loading.show(context);
         var value = await HttpUtils.put("/v1/account/profile/picture", data: data, options: op);
         var result = BoolModelResult.fromJson(value);
-        if (result.code == 200) {
-          return Future.value(result.data);
-        }
+        return;
+
       } finally {
         Loading.dismiss(context);
       }
 
     }
 
-    return Future.value(false);
   }
 
 }

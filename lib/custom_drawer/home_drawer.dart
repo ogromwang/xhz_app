@@ -150,13 +150,11 @@ class _HomeDrawerState extends State<HomeDrawer> {
             child: GestureDetector(
                 onTap: () {
                   _profileModel.updateProfilePicture(context).then((value) {
-                    if (value) {
-                      _profileModel.get(context).then((value) {
-                        setState(() {
-                          _profileModel = _profileModel;
-                        });
+                    _profileModel.get(context).then((value) {
+                      setState(() {
+                        _profileModel = _profileModel;
                       });
-                    }
+                    });
                   });
                 },
                 child: ClipRRect(borderRadius: const BorderRadius.all(Radius.circular(60.0)), child: image))

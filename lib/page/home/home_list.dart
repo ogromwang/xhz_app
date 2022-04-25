@@ -58,7 +58,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
       _goalModel = _goalModel;
     });
 
-    searchList();
 
     super.initState();
   }

@@ -37,8 +37,8 @@ class SignModel {
       ToastUtil.err("密码长度应该在[5-12]");
       return;
     }
-    if (username.length > 6) {
-      ToastUtil.err("用户名不能超过[6]");
+    if (username.length > 12) {
+      ToastUtil.err("用户名不能超过[12]");
       return;
     }
     if (password != rePassword) {
