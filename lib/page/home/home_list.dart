@@ -223,7 +223,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
           children: [
             // 图片
             Expanded(
-              flex: 4,
+              flex: 8,
               child: Container(
                 decoration: BoxDecoration(
                   // border: Border.all(color: Color(0xFFFF0000), width: 0.5),
@@ -234,7 +234,10 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
               ),
             ),
 
-            // 头像 - 名字 - 钱
+            SizedBox(
+              height: ScreenUtil.getInstance().setHeight(4)
+            ),
+            // 头像 - 名字
             Expanded(
               child: Row(
                 children: [
@@ -258,25 +261,25 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
                           style: TextStyle(color: AppTheme.fontColor ,fontSize: ScreenUtil.getInstance().setSp(35), fontWeight: FontWeight.w400)
                       ),
                     )
-                  ),
-                  // 钱
-                  Expanded(
-                      child: Container(
-                          alignment: Alignment.centerRight,
-                          child: Padding(
-                            padding: EdgeInsets.only(right: ScreenUtil.getInstance().setSp(10), top: ScreenUtil.getInstance().setSp(5)),
-                            child: Text(
-                                "-￥"+item.money.toStringAsFixed(2),
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(color: AppTheme.redColor ,fontSize: ScreenUtil.getInstance().setSp(40), fontWeight: FontWeight.w400)),
-                          )
-                      )
                   )
                 ],
               ),
             ),
 
+            // 钱
+            Container(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: EdgeInsets.only(right: ScreenUtil.getInstance().setSp(10), top: ScreenUtil.getInstance().setSp(5)),
+                  child: Text(
+                      "-￥"+item.money.toStringAsFixed(2),
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(color: AppTheme.redColor ,fontSize: ScreenUtil.getInstance().setSp(40), fontWeight: FontWeight.w400)),
+                )
+            ),
+
             Expanded(
+              flex: 2,
               child: Container(
                   decoration: BoxDecoration(
                     // border: Border.all(color: Color(0xFFFF0000), width: 0.5),
