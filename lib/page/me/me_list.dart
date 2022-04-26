@@ -51,6 +51,34 @@ class _MeListState extends State<MeList> {
     );
   }
 
+  Widget _getSliceItem(BuildContext context, Item item, Widget child) {
+    return Slidable(
+        key: ValueKey("${item.id}"),
+        // 同一组
+        groupTag: "ccc",
+        child: child,
+        // 左侧按钮列表
+        startActionPane: ActionPane(
+          extentRatio: 0.3,
+          // 滑出选项的面板 动画
+          motion: const DrawerMotion(),
+          children: [
+            SlidableAction(
+              onPressed: (_) {
+                _recordMeModel.delete(context, item.id).then((value) {
+                  refreshData(context);
+                });
+              },
+              backgroundColor: AppTheme.redColor,
+              icon: Icons.delete_outlined,
+              label: '删除记录',
+            )
+          ],
+        )
+    );
+  }
+
+
   Widget _getItem(BuildContext context, Item item) {
     double height = ScreenUtil.getInstance().setSp(260);
 
@@ -173,17 +201,7 @@ class _MeListState extends State<MeList> {
         footer: BallPulseFooter(),
         onRefresh: _enableRefresh
             ? () async {
-                _recordMeModel.refreshData(context).then((value) {
-                  if (mounted) {
-                    setState(() {
-                      _recordMeModel = _recordMeModel;
-                    });
-                    if (!_enableControlFinish) {
-                      _controller.resetLoadState();
-                      _controller.finishRefresh();
-                    }
-                  }
-                });
+                refreshData(context);
               }
             : null,
         onLoad: _enableLoad
@@ -233,7 +251,7 @@ class _MeListState extends State<MeList> {
                   child: dateWidget,
                 ));
                 list?.forEach((Item item) {
-                  child.add(_getItem(context, item));
+                  child.add(_getSliceItem(context, item, _getItem(context, item)));
                 });
                 return Column(children: child);
               },
@@ -243,6 +261,20 @@ class _MeListState extends State<MeList> {
         ],
       ),
     );
+  }
+
+  void refreshData(BuildContext context) {
+    _recordMeModel.refreshData(context).then((value) {
+      if (mounted) {
+        setState(() {
+          _recordMeModel = _recordMeModel;
+        });
+        if (!_enableControlFinish) {
+          _controller.resetLoadState();
+          _controller.finishRefresh();
+        }
+      }
+    });
   }
 
   // 顶部的布局

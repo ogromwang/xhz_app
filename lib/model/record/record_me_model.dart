@@ -1,3 +1,5 @@
+import 'package:demo_app/common/popup.dart';
+import 'package:demo_app/model/common/result/common_model_result.dart';
 import 'package:flutter/material.dart';
 import 'package:demo_app/model/account/result/account.dart';
 import 'package:demo_app/request/dio.dart';
@@ -52,6 +54,22 @@ class RecordMeModel {
     _group.forEach((key, value) {
       _groupKeys.add(key);
     });
+  }
+
+  Future delete(BuildContext context, int id) async {
+    var data = {
+      "id" : id
+    };
+
+    try {
+      Loading.show(context);
+      var value = await HttpUtils.delete("/v1/record", data: data);
+      var result = BoolModelResult.fromJson(value);
+
+    } finally {
+      Loading.dismiss(context);
+    }
+
   }
 
   //上拉刷新数据的方法
