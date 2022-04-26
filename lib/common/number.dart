@@ -5,8 +5,9 @@ class MyNumberTextInputFormatter extends TextInputFormatter {
 
   ///允许的小数位数，-1代表不限制位数
   int digit;
+  Function? numberPointFunc;
 
-  MyNumberTextInputFormatter({this.digit = -1});
+  MyNumberTextInputFormatter({this.digit = -1, this.numberPointFunc});
 
   static double strToFloat(String str, [double defaultValue = defaultDouble]) {
     try {
@@ -42,6 +43,12 @@ class MyNumberTextInputFormatter extends TextInputFormatter {
   TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
     String value = newValue.text;
     int selectionIndex = newValue.selection.end;
+
+    if ((value.contains(".."))) {
+      if (numberPointFunc != null) {
+        numberPointFunc!();
+      }
+    }
 
     var number = getNumber(value);
     if (number.length > 6) {

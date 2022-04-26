@@ -24,6 +24,7 @@ class SliderView extends StatefulWidget {
 
 class _SliderViewState extends State<SliderView> {
   double distValue = 0;
+  bool numberPoint = false;
   var offset = 0;
 
   @override
@@ -96,10 +97,13 @@ class _SliderViewState extends State<SliderView> {
           )
       ),
       // controller: _money,
-      keyboardType: TextInputType.number,
+      keyboardType: TextInputType.text,
       inputFormatters: [
         FilteringTextInputFormatter(RegExp("[0-9.]"), allow: true),
-        MyNumberTextInputFormatter(digit: 2),
+        MyNumberTextInputFormatter(digit: 2, numberPointFunc: () {
+          print("让offset++");
+          numberPoint = true;
+        }),
       ],
       textAlign: TextAlign.center,
       decoration: InputDecoration(
@@ -121,6 +125,10 @@ class _SliderViewState extends State<SliderView> {
             } else {
               offset += 3;
             }
+          }
+          if (numberPoint) {
+            numberPoint = false;
+            offset++;
           }
 
           if (d > 100) {

@@ -129,6 +129,12 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
 
   /// 获取 list
   void searchList() {
+    _goalModel.getGoal(context).then((value) {
+      setState(() {
+        _goalModel = _goalModel;
+      });
+    });
+
     _recordAllModel.refreshData(context).then((value) {
       if (mounted) {
         setState(() {
@@ -139,9 +145,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
           _controller.finishRefresh();
         }
       }
-    });
-    _goalModel.getGoal(context).then((value) {
-      _goalModel = _goalModel;
     });
   }
 
