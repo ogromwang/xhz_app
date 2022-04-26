@@ -19,7 +19,7 @@ Future<void> init() async {
   await SpUtil().init();
   // 初始化request类
   HttpUtils.init(
-    baseUrl: "http://172.16.68.10/",
+    baseUrl: "http://124.223.155.240/",
     connectTimeout: 6500,
     receiveTimeout: 6500,
     sendTimeout: 6500
