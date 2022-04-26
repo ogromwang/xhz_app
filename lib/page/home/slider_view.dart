@@ -4,11 +4,19 @@ import 'package:demo_app/common/app_theme.dart';
 import 'package:flutter/services.dart';
 
 class SliderView extends StatefulWidget {
-  const SliderView({Key? key, this.onChangedistValue, this.distValue})
+  SliderView({
+    Key? key,
+    this.onChangedistValue,
+    this.distValue,
+    this.maxLen=100,
+    this.hitText="本次花销"
+  })
       : super(key: key);
 
   final Function(double)? onChangedistValue;
   final double? distValue;
+  double maxLen;
+  String hitText;
 
   @override
   _SliderViewState createState() => _SliderViewState();
@@ -16,7 +24,6 @@ class SliderView extends StatefulWidget {
 
 class _SliderViewState extends State<SliderView> {
   double distValue = 0;
-  double maxLen = 100;
   var offset = 0;
 
   @override
@@ -41,7 +48,7 @@ class _SliderViewState extends State<SliderView> {
                 child: testInput()
               ),
               Expanded(
-                flex: maxLen.toInt() - distValue.round(),
+                flex: widget.maxLen.toInt() - distValue.round(),
                 child: const SizedBox(),
               ),
             ],
@@ -55,7 +62,7 @@ class _SliderViewState extends State<SliderView> {
                 setState(() {
                   distValue = double.parse(value.toStringAsFixed(2));
                   if (value == 0) {
-                    maxLen = 100;
+                    widget.maxLen = 100;
                   }
                 });
                 try {
@@ -63,7 +70,7 @@ class _SliderViewState extends State<SliderView> {
                 } catch (_) {}
               },
               min: 0,
-              max: maxLen,
+              max: widget.maxLen,
               activeColor: HomeAppTheme.buildLightTheme().primaryColor,
               inactiveColor: Colors.grey.withOpacity(0.4),
               // divisions: 100,
@@ -102,7 +109,6 @@ class _SliderViewState extends State<SliderView> {
       ),
       autofocus: false,
       onChanged: (val) {
-        print(val);
         var d = double.parse(val);
         setState(() {
           distValue = d;
@@ -118,7 +124,7 @@ class _SliderViewState extends State<SliderView> {
           }
 
           if (d > 100) {
-            maxLen = distValue;
+            widget.maxLen = distValue;
           }
 
           try {
@@ -133,7 +139,7 @@ class _SliderViewState extends State<SliderView> {
       children: [
         Padding(
           padding: EdgeInsets.only(left: 60),
-          child: Text("本次花销: ", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 10),),
+          child: Text("${widget.hitText}: ", style: TextStyle(fontWeight: FontWeight.w200, fontSize: 10),),
         ),
         text,
       ],

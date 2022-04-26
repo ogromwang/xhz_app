@@ -32,11 +32,11 @@ class GoalModel {
 
     try {
       Loading.show(context);
-      var value = await HttpUtils.post("v1/goal", params: params);
+      var value = await HttpUtils.post("v1/goal", data: params);
       BoolModelResult result = BoolModelResult.fromJson(value);
       if (result.code == 200) {
-        getGoal(context);
-        return;
+        // 刷新
+        Navigator.pop(context, true);
       }
 
     } finally {

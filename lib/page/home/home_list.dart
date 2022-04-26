@@ -1,8 +1,10 @@
 import 'dart:ui';
 import 'package:demo_app/common/widgets.dart';
 import 'package:demo_app/model/goal/goal_model.dart';
+import 'package:demo_app/model/goal/result/goal_result_model.dart';
 import 'package:demo_app/model/record/record_all_model.dart';
 import 'package:demo_app/model/record/result/record_result.dart';
+import 'package:demo_app/page/add/update_goal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -367,11 +369,14 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
     var goal = 0.00;
     var color = AppTheme.secondaryColor;
 
+    var oneGoal;
     for (var element in _goalModel.data) {
       if (element.type == 1) {
         name = element.name;
         curr = element.currMoney;
         goal = element.goal;
+
+        oneGoal = element;
 
         if (goal > 0 && curr / goal > 0.7) {
           color = AppTheme.redColor;
@@ -385,8 +390,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
         children: [
           InkWell(
             onTap: () {
-              print("你点击了");
-              openBottom();
+              goUpdateGoal(oneGoal);
             },
             child: box(color, Padding(
                 padding: EdgeInsets.all(ScreenUtil.getInstance().setSp(3)),
@@ -605,9 +609,14 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
   }
 
 
-  void openBottom() {
-    //出现底部弹窗
-
+  void goUpdateGoal(OneGoal oneGoal) {
+    FocusScope.of(context).requestFocus(FocusNode());
+    Navigator.push<dynamic>(
+      context,
+      MaterialPageRoute<dynamic>(builder: (BuildContext context) => UpdateGoalScreen(oneGoal), fullscreenDialog: true),
+    ).then((value) {
+      searchList();
+    });
   }
 }
 
