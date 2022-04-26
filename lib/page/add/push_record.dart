@@ -126,7 +126,6 @@ class _PushRecordScreenState extends State<PushRecordScreen> {
         SliderView(
           distValue: _recordModel.money,
           onChangedistValue: (double value) {
-            print(value);
             _recordModel.money = value;
           },
         ),
@@ -171,12 +170,10 @@ class _PushRecordScreenState extends State<PushRecordScreen> {
 
   Widget showPhoto(double? height) {
     if (_recordModel.photo.isNotEmpty) {
-      return Expanded(
-        child: Image.file(
-          File(_recordModel.photo),
-          height: height,
-          fit: BoxFit.fill,
-        ),
+      return Image.file(
+        File(_recordModel.photo),
+        height: height,
+        fit: BoxFit.fill,
       );
     } else {
       return Icon(Icons.add, size: ScreenUtil.getInstance().setSp(110), color: Colors.grey);

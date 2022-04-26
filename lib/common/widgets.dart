@@ -220,3 +220,30 @@ class ImageCompose {
   }
 
 }
+
+class Alter {
+  // 弹出对话框
+  static Future<bool?> showDeleteConfirmDialog1(BuildContext context, Widget title, Widget content) {
+    return showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: title,
+          content: content,
+          actions: <Widget>[
+            TextButton(
+                child: Text("取消"),
+                onPressed: () => {}
+            ),
+            TextButton(
+              child: Text("删除"),
+              onPressed: () {
+                //关闭对话框并返回true
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
