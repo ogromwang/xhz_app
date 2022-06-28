@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:demo_app/common/popup.dart';
 import 'package:demo_app/common/widgets.dart';
 import 'package:demo_app/model/common/result/common_model_result.dart';
-import 'package:demo_app/model/sign/result/sign_model.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:demo_app/request/dio.dart';
@@ -33,12 +33,18 @@ class RecordModel {
     };
 
     if (photo.isNotEmpty) {
-      var fileCompose = await ImageCompose.imageCompressAndGetFile(File(photo));
-      if (fileCompose == null) {
-        ToastUtil.err("图片处理失败");
-        return;
+      if (kIsWeb) {
+        var img = Image.network(photo);
+
+      } else {
+        var fileCompose = await ImageCompose.imageCompressAndGetFile(File(photo));
+        if (fileCompose == null) {
+          ToastUtil.err("图片处理失败");
+          return;
+        }
+        param["file"]= await MultipartFile.fromFile(fileCompose.path);
       }
-      param["file"]= await MultipartFile.fromFile(fileCompose.path);
+
     }
 
     var op = Options(

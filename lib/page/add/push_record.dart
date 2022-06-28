@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:demo_app/common/number.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:demo_app/model/record/record.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -170,11 +170,20 @@ class _PushRecordScreenState extends State<PushRecordScreen> {
 
   Widget showPhoto(double? height) {
     if (_recordModel.photo.isNotEmpty) {
-      return Image.file(
-        File(_recordModel.photo),
-        height: height,
-        fit: BoxFit.fill,
-      );
+      if (kIsWeb) {
+        return Image.network(
+          _recordModel.photo,
+          height: height,
+          fit: BoxFit.fill,
+        );
+      } else {
+        return Image.file(
+          File(_recordModel.photo),
+          height: height,
+          fit: BoxFit.fill,
+        );
+      }
+
     } else {
       return Icon(Icons.add, size: ScreenUtil.getInstance().setSp(110), color: Colors.grey);
     }
