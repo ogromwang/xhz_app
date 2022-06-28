@@ -219,6 +219,7 @@ class _PushRecordScreenState extends State<PushRecordScreen> {
 
                     if (pickFile != null) {
                       setState(() {
+                        _recordModel.pickedFile = pickFile;
                         _recordModel.photo = pickFile.path;
                       });
                     }
@@ -244,6 +245,7 @@ class _PushRecordScreenState extends State<PushRecordScreen> {
                     final pickFile = await imagePicker.getImage(source: ImageSource.gallery);
                     if (pickFile != null) {
                       setState(() {
+                        _recordModel.pickedFile = pickFile;
                         _recordModel.photo = pickFile.path;
                       });
                     }

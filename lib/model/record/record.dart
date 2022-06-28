@@ -7,6 +7,8 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:demo_app/request/dio.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:image_picker/image_picker.dart';
 
 class RecordModel {
 
@@ -14,6 +16,7 @@ class RecordModel {
   String desc = "";
   bool isSelected = true;
   String photo = "";
+  late PickedFile pickedFile;
 
   /// push
   Future push(BuildContext context) async {
@@ -34,7 +37,8 @@ class RecordModel {
 
     if (photo.isNotEmpty) {
       if (kIsWeb) {
-        var img = Image.network(photo);
+        var bytes = await pickedFile.readAsBytes();
+        param["file"]= MultipartFile.fromBytes(bytes.toList(), filename: 'test.jpg',contentType: MediaType('image', 'jpeg'));
 
       } else {
         var fileCompose = await ImageCompose.imageCompressAndGetFile(File(photo));
@@ -48,6 +52,7 @@ class RecordModel {
     }
 
     var op = Options(
+        contentType: 'multipart/form-data',
         sendTimeout: 60000
     );
 

@@ -8,6 +8,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:demo_app/request/dio.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:http_parser/http_parser.dart';
 
 class ProfileModel {
 
@@ -31,16 +33,25 @@ class ProfileModel {
   Future<void> updateProfilePicture(BuildContext context) async {
     final pickFile = await imagePicker.getImage(source: ImageSource.gallery);
 
+    MultipartFile multi;
     if (pickFile != null) {
-      var composeImage = await ImageCompose.imageCompressAndGetFile(File(pickFile.path));
-      String path = pickFile.path;
-      if (composeImage != null) {
-        path = composeImage.path;
+      if (kIsWeb) {
+        var bytes = await pickFile.readAsBytes();
+        multi = MultipartFile.fromBytes(bytes.toList(), filename: 'test.jpg',contentType: MediaType('image', 'jpeg'));
+
+      } else {
+        var composeImage = await ImageCompose.imageCompressAndGetFile(File(pickFile.path));
+        String path = pickFile.path;
+        if (composeImage != null) {
+          path = composeImage.path;
+        }
+        multi = await MultipartFile.fromFile(path);
       }
 
       var data = FormData.fromMap({
-        "file": await MultipartFile.fromFile(path)
+        "file": multi
       });
+
       var op = Options(
         sendTimeout: 60000
       );
@@ -54,9 +65,6 @@ class ProfileModel {
       } finally {
         Loading.dismiss(context);
       }
-
     }
-
   }
-
 }
