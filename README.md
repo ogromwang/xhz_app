@@ -19,3 +19,6 @@
 ![mypage](./docs/img/IMG_mypage_mini.png)
 #### 发布
 ![addrecord](./docs/img/IMG_addrecord_mini.png)
+
+### 后端服务
+详情见 [https://github.com/ogromwang/xhz](https://github.com/ogromwang/xhz)
