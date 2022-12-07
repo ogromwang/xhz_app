@@ -9,9 +9,13 @@
 ### 项目结构
 
 ### FlutterApp截图
-
-![1](./docs/img/IMG_login.png)
-![1](./docs/img/IMG_register.png)
-![1](./docs/img/IMG_homepage.png)
-![1](./docs/img/IMG_mypage.png)
-![1](./docs/img/IMG_addrecord.png)
+#### 登录
+![login](./docs/img/IMG_login_mini.png)
+#### 注册
+![register](./docs/img/IMG_register_mini.png)
+#### 首页
+![homepage](./docs/img/IMG_homepage_mini.png)
+#### 我的信息
+![mypage](./docs/img/IMG_mypage_mini.png)
+#### 发布
+![addrecord](./docs/img/IMG_addrecord_mini.png)
