@@ -1,16 +1,17 @@
-# demo_app
+## xhz_app 一个基于 Flutter Go 的在线亲友记账共享 app
+[![docs](https://img.shields.io/badge/docs-reference-green.svg)](https://github.com/ogromwang)
+[![email](https://img.shields.io/badge/email-ogromwang@gmail.com-red.svg)](ogromwang@gmail.com)
 
-一个测试app
 
-## Getting Started
+### 项目介绍
+后端使用 golang gin gorm 开发，移动端使用 Flutter 构建。
 
-This project is a starting point for a Flutter application.
+### 项目结构
 
-A few resources to get you started if this is your first Flutter project:
+### FlutterApp截图
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![1](./docs/img/IMG_login.png)
+![1](./docs/img/IMG_register.png)
+![1](./docs/img/IMG_homepage.png)
+![1](./docs/img/IMG_mypage.png)
+![1](./docs/img/IMG_addrecord.png)
